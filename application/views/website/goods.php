@@ -56,25 +56,25 @@
                             <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="cs-field-holder">
-                                    <i class="icon-lock2"></i>
+                                    <i class="icon-home"></i>
                                     <input name="manufacturer" type="text" placeholder="Manufacturer *" required>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="cs-field-holder">
-                                    <i class="icon-lock2"></i>
+                                    <i class="icon-home"></i>
                                     <input name="model" type="text" placeholder="Model *" required>
                                 </div>
                             </div>
                              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="cs-field-holder">
-                                    <i class="icon-lock2"></i>
+                                    <i class="icon-home"></i>
                                     <input name="other" type="text" placeholder="Other *" required>
                                 </div>
                             </div>
                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="cs-field-holder">
-                                    <i class="icon-lock2"></i>
+                                    <i class="icon-home"></i>
                                     <input name="serial" type="text" placeholder="Serial *" required>
                                 </div>
                             </div>                            
@@ -95,9 +95,10 @@
                        
                          <div class="cs-field-holder  col-sm-4">
                                      <h2>List Of Goods</h2>
-                                    <input name="Serial" type="text" placeholder="Search *" required>
+                                    <input name="name" type="text" placeholder="Search *" id="filterTable-input" data-type="search"   >
+
                             </div>   
-                       <table class=" table">
+                       <table data-role="table" class=" table"  data-filter="true" data-input="#filterTable-input">
     <thead>
       <tr>
         <th>Manufacturer</th>
@@ -109,20 +110,30 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>123</td>
-        <td>123</td>
-         <td>123</td>
-        <td>122</td>
-         <td><a href="" ><span class="icon-pencil"></span> </a>
-            <span>&nbsp;&nbsp;</span>
-            <a href="" > <span class="icon-trash"></span></a>
-         </td>
-      </tr>
+      
+ <?php
+                            foreach($data['result'] as $item) {
+                                echo 
+                                    '<tr>
+                                        <td> '. $item->manufacturer .'</td>
+                                        <td> '. $item->model .'</td>
+                                        <td> '. $item->other .'</td>
+                                        <td> '. $item->serial .'</td>
+                                        <td><a href="'. site_url('welcome/editGoods?id=' . $item->id ) .' "><span class="icon-pencil"></span> </a> 
+                                                 <span>&nbsp;&nbsp;</span>
+                                            <a href="'. site_url('welcome/deleteGoods?id=' . $item->id ) .' "><span class="icon-trash"></span> </a> 
+
+                                         </td>
+                                    </tr>';
+
+                            }
+                        ?>                  
+
 
 
     </tbody>
   </table>
+
                     </div>                    
                 </div>
     

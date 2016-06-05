@@ -6,17 +6,17 @@ class Welcome extends CI_Controller {
 
     public function __construct(){
         parent::__construct();
-        //$id = $this->session->userdata('user_id');
-         $this->load->model('UserModel');
+        $id = $this->session->userdata('id');
+        $this->load->model('UserModel');
 
-        // if( $id != NULL  ) {
-        //     $this->load->model('UserModel');
+        if( $this->session->userdata('id') > -1  ) {
+            $this->load->model('UserModel');
 
-        // } else {
+        } else if ($this->session->userdata('id') == -1  ) {
 
-        //     redirect('Login/');
+           redirect('Login/');
 
-        // }
+        }
                
         error_reporting(0);
     }
@@ -103,25 +103,6 @@ class Welcome extends CI_Controller {
 
 		} else {
 
-            $dutyArray = $this->UserModel->getAllfromTable('duty');
-            $duties = array();
-
-            foreach($dutyArray as $item => $value) {
-                $duties[$value->duty_id] = $value->name;
-            }
-
-
-            $jkArray = $this->UserModel->getAllfromTable('jk');
-            $jks = array();
-
-            foreach($jkArray as $item => $value) {
-                $jks[$value->id] = $value->name;
-            }            
-
-
-            $data['duties'] = $duties;
-            $data['jks'] = $jks;
-            $data['result'] = $this->UserModel->getCustomFields();
 
 
 			$this->load->view('common/header');
@@ -140,12 +121,14 @@ class Welcome extends CI_Controller {
 
         //if query found any result i.e userfound
         if($result) {
-            $data['user_id'] = $result->user_id;
-            $data['type'] = $result->type;
-            $data['fullName'] = $result->first_name . " " . $result->last_name;
-            $data['message'] = 'Your are successfully Login && your session has been start';
+
+            $data['id'] = $result->id;
+            //$data['message'] = 'Your are successfully Login && your session has been start';
+            $data['email'] = $result->email;
+            $data['password'] = $result->password;
+            $data['fullname'] = $result->fullname;
             $this->session->set_userdata($data);
-            redirect('Welcome/home');
+            redirect('Welcome/goods');
 
         }else{
             $data['message'] = ' Your Email ID or Password is invalid  !!!!! ';
@@ -246,32 +229,129 @@ class Welcome extends CI_Controller {
         }
     }
 
-    public function news(){
+    public function editGoods(){
+
+        if($this->input->post()) {
+
+            $manufacturer = $this->input->post('manufacturer', TRUE);
+            $model = $this->input->post('model', TRUE);
+            $other = $this->input->post('other', TRUE);
+            $serial = $this->input->post('serial', TRUE);
+            $id = $this->input->post('id', true);
+            $data = array (
+                "manufacturer" => $manufacturer, 
+                "model" => $model,
+                "other" => $other, 
+                "serial" => $serial                
+            );
+            $this->UserModel->update('goods','id',$id, $data);
+            
+            redirect('Welcome/goods');
 
 
-        $data['result'] = $this->UserModel->getNews();
+        } else {
 
-        $this->load->view('common/header');
-        $this->load->view('website/news', array('data' => $data));
-        $this->load->view('common/footer');
+            $id = $this->input->get('id', TRUE);
+            $data = $this->UserModel->getrecordById('goods','id',$id);
+            $this->load->view('common/header');
+            $this->load->view('website/editGoods', array('data' => $data));
+            $this->load->view('common/footer');          
+
+        }   
+   
 
     }
 
-    public function viewNews(){
+    public function deleteGoods(){
     
     if( $this->input->get() ) {
 
             $id = $this->input->get('id', TRUE);
 
-            $data['result'] = $this->UserModel->getNewsdetails($id);
+            $data['result'] = $this->UserModel->delete('id',$id,'goods');
 
-            $this->load->view('common/header');
-            $this->load->view('website/viewNews', array('data' => $data));
-            $this->load->view('common/footer');
+            redirect('welcome/goods');
+
 
         }    
 
     }
+    public function deleteCustomer(){
+    
+    if( $this->input->get() ) {
+
+            $id = $this->input->get('id', TRUE);
+
+            $data['result'] = $this->UserModel->delete('id',$id,'customers');
+
+            redirect('welcome/customers');
+
+
+        }    
+
+    }    
+    public function editCustomer(){
+
+        if($this->input->post()) {
+
+            $fname = $this->input->post('fname', TRUE);
+            $lname = $this->input->post('lname', TRUE);
+            $pname = $this->input->post('pname', TRUE);
+            $dob = $this->input->post('dob', TRUE);
+            $address1 = $this->input->post('address1', TRUE);
+            $address2 = $this->input->post('address2', TRUE);            
+            $suburb = $this->input->post('suburb', TRUE);
+            $state = $this->input->post('state', TRUE);
+            $postcode = $this->input->post('postcode', TRUE);
+            $postalAddress1 = $this->input->post('postalAddress1', TRUE);
+            $postalAddress2 = $this->input->post('postalAddress2', TRUE);
+            $postalSuburb = $this->input->post('postalSuburb', TRUE);                     
+            $postalState = $this->input->post('postalState', TRUE);
+            $postalPostcode = $this->input->post('postalPostcode', TRUE);
+            $homePhoneNumber = $this->input->post('homePhoneNumber', TRUE);
+            $workPhoneNumber = $this->input->post('workPhoneNumber', TRUE);
+            $mobilePhoneNumber = $this->input->post('mobilePhoneNumber', TRUE);
+            $alert = $this->input->post('alert', TRUE);      
+
+            $data = array(
+                'fname' => $fname,
+                'lname' => $lname,
+                'pname' => $pname,
+                'dob' => $dob,
+                'address1' => $address1,
+                'address2' => $address2,
+                'suburb' => $suburb,
+                'state' => $state,
+                'postcode' => $postcode,
+                'postalAddress1' => $postalAddress1,
+                'postalAddress2' => $postalAddress2,
+                'postalSuburb' => $postalSuburb,
+                'postalState' => $postalState,
+                'postalPostcode' => $postalPostcode,
+                'homePhoneNumber' => $homePhoneNumber,
+                'workPhoneNumber' => $workPhoneNumber,
+                'mobilePhoneNumber' => $mobilePhoneNumber,
+                'alert' => $alert                                 
+                );
+
+            $this->UserModel->update('customers','id',$id, $data);
+            
+            redirect('Welcome/customers');
+
+
+        } else {
+
+            $id = $this->input->get('id', TRUE);
+            $data = $this->UserModel->getrecordById('customers','id',$id);
+            $this->load->view('common/header');
+            $this->load->view('website/editCustomer', array('data' => $data));
+            $this->load->view('common/footer');          
+
+        }   
+   
+
+    }    
+    
     /**
      * logout
      */
@@ -280,12 +360,11 @@ class Welcome extends CI_Controller {
 
         $this->session->sess_destroy();
 
-        redirect('welcome/login');
+        redirect('Login');
 
     }  
 
-    public function goods()
-    {
+    public function goods(){
 
             if( $this->input->post()  ){
 
@@ -309,8 +388,10 @@ class Welcome extends CI_Controller {
                 $this->load->view('common/footer');
 
             } else {
+                
+                $data['result'] = $this->UserModel->getGoods();
                 $this->load->view('common/header');
-                $this->load->view('website/goods', array('data' => null));
+                $this->load->view('website/goods', array('data' => $data));
                 $this->load->view('common/footer');
             }
 
@@ -331,41 +412,78 @@ class Welcome extends CI_Controller {
             
     }
 
-    public function request(){
-        if(  $this->userLoginStatus() ){
-            if( $this->input->post()  ){
+    public function customers(){
 
-                $title =  $this->input->post('title', TRUE);
-                $request = $this->input->post('request', TRUE);
-                $user_id = $this->session->userdata('user_id');
                 
-                $data = array(
-                    'title' => $title,
-                    'request' => $request,
-                    'user_id' => $user_id
-                    );
-                $data['result'] = $this->UserModel->insert('request', $data);
-                $data['admin'] = $this->UserModel->getAllAdmin();
-                foreach ($data['admin'] as  $item) {
-
-                    $email = $item->email;
-                    mail( $email, 'New request has been created', $request);
-                    # code...
-                }
-                $this->load->view('common/header');
-                $this->load->view('website/request', array('data' => $data));
-                $this->load->view('common/footer');
-
-            } else {
-                $this->load->view('common/header');
-                $this->load->view('website/request', array('data' => null));
-                $this->load->view('common/footer');
-            }
-
-        }
+        $data['result'] = $this->UserModel->getCustomer();
+        $this->load->view('common/header');
+        $this->load->view('website/customers', array('data' => $data));
+        $this->load->view('common/footer');
+            
+        
        
 
-    }  
+    }    
+    public function addCustomer(){
+            
+        if( $this->input->post()  ){
+
+            $fname = $this->input->post('fname', TRUE);
+            $lname = $this->input->post('lname', TRUE);
+            $pname = $this->input->post('pname', TRUE);
+            $dob = $this->input->post('dob', TRUE);
+            $address1 = $this->input->post('address1', TRUE);
+            $address2 = $this->input->post('address2', TRUE);            
+            $suburb = $this->input->post('suburb', TRUE);
+            $state = $this->input->post('state', TRUE);
+            $postcode = $this->input->post('postcode', TRUE);
+            $postalAddress1 = $this->input->post('postalAddress1', TRUE);
+            $postalAddress2 = $this->input->post('postalAddress2', TRUE);
+            $postalSuburb = $this->input->post('postalSuburb', TRUE);                     
+            $postalState = $this->input->post('postalState', TRUE);
+            $postalPostcode = $this->input->post('postalPostcode', TRUE);
+            $homePhoneNumber = $this->input->post('homePhoneNumber', TRUE);
+            $workPhoneNumber = $this->input->post('workPhoneNumber', TRUE);
+            $mobilePhoneNumber = $this->input->post('mobilePhoneNumber', TRUE);
+            $alert = $this->input->post('alert', TRUE);      
+
+            $data = array(
+                'fname' => $fname,
+                'lname' => $lname,
+                'pname' => $pname,
+                'dob' => $dob,
+                'address1' => $address1,
+                'address2' => $address2,
+                'suburb' => $suburb,
+                'state' => $state,
+                'postcode' => $postcode,
+                'postalAddress1' => $postalAddress1,
+                'postalAddress2' => $postalAddress2,
+                'postalSuburb' => $postalSuburb,
+                'postalState' => $postalState,
+                'postalPostcode' => $postalPostcode,
+                'homePhoneNumber' => $homePhoneNumber,
+                'workPhoneNumber' => $workPhoneNumber,
+                'mobilePhoneNumber' => $mobilePhoneNumber,
+                'alert' => $alert                                 
+                );
+
+            $data['result'] = $this->UserModel->insert( 'customers', $data );
+
+            $this->load->view('common/header');
+            $this->load->view('website/addCustomer', array('data' => $data));
+            $this->load->view('common/footer');
+
+        } else {
+            
+
+            $this->load->view('common/header');
+            $this->load->view('website/addCustomer', array('data' => null));
+            $this->load->view('common/footer');
+        }               
+
+    }        
+    
 
     function editUser() {
         if(  $this->userLoginStatus() ){

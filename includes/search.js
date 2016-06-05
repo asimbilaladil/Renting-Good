@@ -1,6 +1,7 @@
     // Write on keyup event of keyword input element
     $("#search").keyup(function(){
         _this = this;
+        console.log("HIT");
         // Show only matching TR, hide rest of them
         $.each($("#table tbody tr"), function() {
             if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)

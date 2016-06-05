@@ -1,4 +1,4 @@
-<?php   $type = $this->session->userdata('type');
+<?php   $id = $this->session->userdata('id');
         $fullName = $this->session->userdata('fullName');
 ?>
 <!DOCTYPE html>
@@ -29,6 +29,8 @@
 <script src="<?php echo base_url("includes/website/assets/scripts/jquery.js") ?> "></script>
 <script src="<?php echo base_url("includes/website/assets/scripts/modernizr.js") ?> "></script>
 <script src="<?php echo base_url("includes/website/assets/scripts/bootstrap.min.js") ?> "></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>includes/search.js"></script>   
+
 </head>
 <body class="wp-smartstudy">
 <div class="wrapper"> 
@@ -65,7 +67,7 @@
                     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         <div class="cs-user">
                             <ul>
-                                       <?php if($type == 'User') { ?>
+                                       <?php if($id != '' ) { ?>
         
                      
                                 <li>
@@ -73,9 +75,7 @@
                                         
                                         <a href="#"><?php echo  $fullName; ?> </a>
                                         <ul>
-                                            <li><a href="<?php echo base_url("/index.php/Welcome/editPassword") ?>"><i class="icon-user"></i> Change Password</a></li>
-                                            <li><a href="<?php echo base_url("/index.php/Welcome/request") ?>"><i class="icon-message"></i> Request</a></li>
-                                            <li><a href="<?php echo base_url("/index.php/Welcome/editUser") ?>"><i class="icon-user"></i> Edit User</a></li>
+
 
                                             <li><a href="<?php echo base_url("/index.php/Welcome/logout") ?>"><i class="icon-log-out"></i> Logout</a></li>
                                         </ul>
@@ -83,11 +83,10 @@
                                     </div>
                                 </li>
                                 <li></li>
-                                    <?php } else if ($type == 'Super Admin' || $type == 'JK Admin') {?>
-                                <li><a href="<?php echo base_url("/index.php/Admin") ?>"><i class="icon-user2"></i>Admin</a></li>
+                                    <?php } else { ?>
 
-                                       <?php  } else { ?>
-                        <li><a href="<?php echo base_url("/index.php/Welcome/login") ?> " ><i class="icon-login"></i>Login</a></li>
+                                      
+                        <li><a href="<?php echo base_url("/index.php/login") ?> " ><i class="icon-login"></i>Login</a></li>
                                        <?php } ?>
                             </ul>
                         </div>
@@ -115,8 +114,8 @@
                         <div class="cs-main-nav pull-right">
                             <nav class="main-navigation">
                                 <ul>
-                                    <li><a href="<?php echo site_url('Welcome/home'); ?>">Goods</a></li>
-                                    <li><a href="<?php echo site_url('Welcome/home'); ?>">Customers</a></li>
+                                    <li><a href="<?php echo site_url('Welcome/Goods'); ?>">Goods</a></li>
+                                    <li><a href="<?php echo site_url('Welcome/Customers'); ?>">Customers</a></li>
                                     <li><a href="<?php echo site_url('Welcome/home'); ?>">Renting</a></li>
 
                                    <li><a href="<?php echo site_url('Welcome/news'); ?>">Report</a></li>
