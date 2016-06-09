@@ -10,11 +10,9 @@ class UserModel extends CI_Model
 
     public function user_login_check_info($user_email, $user_password){
         $this->db->select('*');
-        $this->db->from('user');
+        $this->db->from('users');
         $this->db->where('email', $user_email);
         $this->db->where('password', $user_password);
-        $this->db->where('verified', 'true');
-        $this->db->where('type', 'User');
         $quary_result=$this->db->get();
         $result=$quary_result->row();
         
@@ -22,17 +20,35 @@ class UserModel extends CI_Model
     }
     
     /**
-     * Get Custom fields Method
+     * Get Goods from db Method
      */
 
-    public function getCustomFields (){
+    public function getGoods (){
         $this->db->select('*');
-        $this->db->from('customfields');
+        $this->db->from('goods');
         $quary_result=$this->db->get();
         $result = $quary_result->result();
         return $result;
     }
+    /**
+     * Get Customer from db Method
+     */
 
+    public function getCustomer (){
+        $this->db->select('*');
+        $this->db->from('customers');
+        $quary_result=$this->db->get();
+        $result = $quary_result->result();
+        return $result;
+    }    
+
+    /**
+     * Delete Method 
+     */
+    public function delete ( $whereParam1, $whereParam2, $tableName ){
+
+        $this->db->delete( $tableName , array( $whereParam1 => $whereParam2) ); 
+    } 
     /**
      * Insert Method
      * @param tableName
@@ -70,44 +86,24 @@ class UserModel extends CI_Model
         return false;
 
     }
+    /*
+    * Get record from table using single condition
+    */
+    function getrecordById( $tableName, $whereParam1, $whereParam2  ) {
 
-    /**
-     * Get Custom fields Method
-     */
-
-    public function getWaara ($id){
-        
-        $query = $this->db->query('CALL get_waara('.$id.')');
-        $query->result();
-
-        return $query->result();
-    }  
-
-    public function getNews (){
-        
         $this->db->select('*');
-        $this->db->from('news');
+        $this->db->from($tableName);
+        $this->db->where($whereParam1, $whereParam2 );
         $quary_result=$this->db->get();
-        $result = $quary_result->result();
-        return $result;
-    }  
-
-    public function getNewsdetails ($id){
+        $result=$quary_result->row();
         
-        $this->db->select('*');
-        $this->db->from('news');
-        $this->db->where('id',$id);
-        $quary_result=$this->db->get();
-        $result = $quary_result->result();
-        return $result;
-    } 
-    public function getUserWaaraCalendar ($id) {
-        
-        $query = $this->db->query('CALL get_user_waara_calendar('.$id.')');
-        $query->result();
+        return $result;;
+    }
 
-        return $query->result();
-    }   
+//----------
+
+
+
 
     public function changePassword ($id, $oldPassword, $newPassword){
         
@@ -136,16 +132,7 @@ class UserModel extends CI_Model
 
 
     }  
-    public function getAllAdmin (){
-        
-        $this->db->select('*');
-        $this->db->from('user');
-        $this->db->where('type','JK Admin');
-        $this->db->where('type','Super Admin');
-        $quary_result=$this->db->get();
-        $result = $quary_result->result();
-        return $result;
-    }
+
     public function getAllfromTable( $tableName ) {
         $this->db->select('*');
         $this->db->from( $tableName );
@@ -153,6 +140,17 @@ class UserModel extends CI_Model
         $result = $quary_result->result();
         return $result;        
     }
+
+    function getAllfromTableWhere( $table, $param, $value ) {
+
+        $this->db->select('*');
+        $this->db->from($table);
+        $this->db->where($param, $value);
+        $quary_result=$this->db->get();
+        $result=$quary_result->result();
+
+        return $result;        
+    }    
 
         /**
      * Insert Method
@@ -231,16 +229,38 @@ class UserModel extends CI_Model
         return false;
 
     }
-    function getSuperAdmin() {
 
-        $this->db->select('*');
-        $this->db->from('user');
-        $this->db->where('type', 'Super Admin' );
-        $quary_result=$this->db->get();
-        $result=$quary_result->row();
-        
-        return $result;;
+
+
+
+
+    public function getAccountNumber($length) {
+        $token = "";
+/*        $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";*/
+        $codeAlphabet = "0123456789";
+        $max = strlen($codeAlphabet) - 1;
+        for ($i=0; $i < $length; $i++) {
+            $token .= $codeAlphabet[$this->crypto_rand_secure(0, $max)];
+        }
+
+        $token = wordwrap($token , 4 , '-' , true );
+        return $token;
     }
+
+    public function crypto_rand_secure($min, $max) {
+        $range = $max - $min;
+        if ($range < 1) return $min; // not so random...
+        $log = ceil(log($range, 2));
+        $bytes = (int) ($log / 8) + 1; // length in bytes
+        $bits = (int) $log + 1; // length in bits
+        $filter = (int) (1 << $bits) - 1; // set all lower bits to 1
+        do {
+            $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
+            $rnd = $rnd & $filter; // discard irrelevant bits
+        } while ($rnd >= $range);
+        return $min + $rnd;
+    }    
 
 
 }
