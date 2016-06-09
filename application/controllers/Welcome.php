@@ -408,20 +408,20 @@ class Welcome extends CI_Controller {
                 $this->UserModel->insert( 'account_customers', $customerItem );
             }
         
-            $this->loadView('website/accounts', null);
+            
+        } 
+        
+        $accountNumber = $this->UserModel->getAccountNumber(12);
 
-        } else {
-            $accountNumber = $this->UserModel->getAccountNumber(12);
+        $goods = $this->UserModel->getAllfromTableWhere('goods', 'assigned', '0');
+        $customers = $this->UserModel->getAllfromTable('customers');
 
-            $goods = $this->UserModel->getAllfromTableWhere('goods', 'assigned', '0');
-            $customers = $this->UserModel->getAllfromTable('customers');
+        $data['accountNumber'] = $accountNumber;
+        $data['goods'] = $goods;
+        $data['customers'] = $customers;
 
-            $data['accountNumber'] = $accountNumber;
-            $data['goods'] = $goods;
-            $data['customers'] = $customers;
-
-            $this->loadView('website/accounts', $data);           
-            }
+        $this->loadView('website/accounts', $data);           
+            
     }
 
 
