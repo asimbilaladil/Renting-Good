@@ -18,101 +18,21 @@ class Welcome extends CI_Controller {
 
         }
                
-        error_reporting(0);
-    }
+      }
 
     public function index()
-	{
+    {
   
-	}
-	public function login()
-	{
-		$this->load->view('common/header');
-		$this->load->view('website/login');
+    }
+    public function login()
+    {
+        $this->load->view('common/header');
+        $this->load->view('website/login');
         $this->load->view('common/footer');
-	}
-	public function signup() {
-
-		if($this->input->post()) {
-
-            $duties = $this->input->post('duties', true);
-            $jks = $this->input->post('jks', true);
-
-            $dutiesStr = "";
-            $jksStr = "";
-
-            foreach( $duties as $value ) {
-                $dutiesStr = $dutiesStr . $value . "," ;
-            }
-            $dutiesStr = rtrim($dutiesStr, ',');  //remove last comma 
+    }
 
 
-            foreach( $jks as $value ) {
-                $jksStr = $jksStr . $value . "," ;
-            }
-            $jksStr = rtrim($jksStr, ',');  //remove last comma 
-
-            $customFields = array();
-            $customFields['result'] = $this->UserModel->getCustomFields();
-
-            $token = $this->generateToken(); 
-            $data = array (
-                'first_name' => $this->input->post('firstName', true),
-                'last_name' => $this->input->post('lastName', true),
-                'email' => $this->input->post('email', true),
-                'password' => md5($this->input->post('password', true)),
-                'phone' => $this->input->post('phone', true),
-                'type' => "User",
-                'verified' => "false",
-                'token' => $token,
-                'pref_duty' => $dutiesStr,
-                'pref_jk'=> $jksStr
-                );
-
-            $emailMessage = "Please verify your waaranet user" . $data['first_name'] . " " . $data['last_name'] . " by using this link \n".base_url()."index.php/Welcome/verify?token=".$token;
-
-            //get inserted id of the user
-            $userInsertedId = $this->UserModel->insert('user', $data);
-
-            //iterate every custom field and check if the key exist in posted data. If exist insert it in user custom data
-            foreach( $customFields['result'] as $value ) {
-
-                if( array_key_exists( $value->field_name, $this->input->post() ) ) {
-
-                    $userCustomData = array (
-                        'user_id' => $userInsertedId,
-                        'customField_id' => $value->customField_id,
-                        'key' => $value->field_name,
-                        'value' => $this->input->post( $value->field_name , true)
-                        );
-
-                    $this->UserModel->insert('user_custom_data', $userCustomData);
-
-                }     
-
-            }
-            $adminEmails = $this->UserModel->getSuperAdmin();
-            foreach ($adminEmails  as $key => $value) {
-
-                mail($value->email,"User Approval",$emailMessage);
-
-            }
-            
-
-            redirect('Welcome/login');
-
-		} else {
-
-
-
-			$this->load->view('common/header');
-			$this->load->view('website/signup',$data);
-	        $this->load->view('common/footer');
-    	}
-	}
-
-
-	    //when admin login button is click
+        //when admin login button is click
     public function user_login_check() {
         $email = $this->input->post('email', true);
         $password = md5($this->input->post('password', true));
@@ -138,61 +58,6 @@ class Welcome extends CI_Controller {
 
     }
 
-    //genrate token for user verification
-    public function generateToken($length = 15) {
-
-	    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	    $charactersLength = strlen($characters);
-	    $randomString = '';
-	    for ($i = 0; $i < $length; $i++) {
-	        $randomString .= $characters[rand(0, $charactersLength - 1)];
-	    }
-	    return $randomString;
-	}
-
-
-
-
-
-    //Home controller
-    public function home() {
-
-        $id = $this->session->userdata('user_id');
-        $type = $this->session->userdata('type');
-
-        if( $id != NULL  && $type == 'User' ) {
-
-
-        $data['events'] = $this->UserModel->getUserWaaraCalendar($id); 
-        $events = [];
-        foreach( $data['events']  as $row ) {
-             $subevent['title'] = $row->duty_name;
-             $subevent['start'] = $row->start_date;
-             $subevent['end'] = $row->end_date;
-             $subevent['url'] = 'waara?id='.$row->id;
-             array_push($events, $subevent);
-        }
-        $data['events'] = $events;  
-
-            $this->load->view('common/header');
-            $this->load->view('website/home',array('data' => $data));
-            $this->load->view('common/footer');
-
-
-        } else if ( $type == 'Super Admin' || $type == 'JK Admin') {
-
-            redirect('Admin/');
-
-        } else {
-
-            redirect('Welcome/login');
-
-        }
-
-
-    }
-
-
     public function verify(){
 
          if( $this->input->get() ) {
@@ -212,23 +77,6 @@ class Welcome extends CI_Controller {
         }
     } 
 
-
-    public function waara(){
-
-
-        if( $this->input->get() ) {
-
-            $id = $this->input->get('id', TRUE);
-
-
-            $data['result'] = $this->UserModel->getWaara($id);
-
-            $this->load->view('common/header');
-            $this->load->view('website/waara', array('data' => $data));
-            $this->load->view('common/footer');
-        }
-    }
-
     public function editGoods(){
 
         if($this->input->post()) {
@@ -242,7 +90,7 @@ class Welcome extends CI_Controller {
                 "manufacturer" => $manufacturer, 
                 "model" => $model,
                 "other" => $other, 
-                "serial" => $serial                
+                "serial" => $serial              
             );
             $this->UserModel->update('goods','id',$id, $data);
             
@@ -377,7 +225,8 @@ class Welcome extends CI_Controller {
                     'manufacturer' => $manufacturer,
                     'model' => $model,
                     'other' => $other,
-                    'serial' => $serial
+                    'serial' => $serial,
+                    'assigned' => 0
                     );
 
                 
@@ -394,9 +243,6 @@ class Welcome extends CI_Controller {
                 $this->load->view('website/goods', array('data' => $data));
                 $this->load->view('common/footer');
             }
-
-        
-       
 
     }    
     public function userLoginStatus()
@@ -420,9 +266,6 @@ class Welcome extends CI_Controller {
         $this->load->view('website/customers', array('data' => $data));
         $this->load->view('common/footer');
             
-        
-       
-
     }    
     public function addCustomer(){
             
@@ -485,71 +328,8 @@ class Welcome extends CI_Controller {
     }        
     
 
-    function editUser() {
-        if(  $this->userLoginStatus() ){
-            if($this->input->post()) {
-
-                $id = $this->input->post('userId', true);
-
-                $customfields = $this->UserModel->getAllfromTable('customfields');
-
-                $customData = array();
-
-                //iterate every custom field and check if the key exist in posted data. If exist insert it in user custom data
-                foreach( $customfields as $item ) {
-                    if( array_key_exists( $item->field_name, $this->input->post() ) ) {
-
-                        $customData = array( "value" => $this->input->post( $item->field_name, true) );
-                                                // tablename           key      value   key    value               data   
-                        $this->UserModel->updateWhere('user_custom_data', 'user_id', $id, 'key', $item->field_name, $customData);
-
-                    }
-                }
 
 
-                $this->UserModel->update('user_custom_data' ,'user_id' , $id, $customData);
-
-                $data = array (
-                    "first_name" => $this->input->post('firstName', true),
-                    "last_name" => $this->input->post('lastName', true),
-                    "email" => $this->input->post('email', true),
-                    "phone" => $this->input->post('phone', true)
-                );
-
-                
-
-                $this->UserModel->update('user' ,'user_id' , $id, $data);
-
-                redirect('Welcome/editUser');
-
-            }
-
-            
-
-                $id = $this->session->userdata('user_id');
-       
-                $data['customFields'] = $this->UserModel->getCustomFieldByUserId( $id );
-
-                $data['user'] = $this->UserModel->getUserById( $id );
-
-                $this->loadView('website/editUser', $data);
-
-        }
-  
-    }  
-
-    /**
-     * Load view 
-     * @param 1 : view name
-     * @param 2 : data to be render on view. If no data pass null
-     */
-    function loadView($view, $data) {
-        //error_reporting(0);
-        $this->load->view('common/header');
-        $this->load->view($view, array('data' => $data));
-        $this->load->view('common/footer');
-
-    }
 
     public function sendPasswordLink () {
         if($this->input->post()){
@@ -582,5 +362,115 @@ class Welcome extends CI_Controller {
             $this->loadView("website/resetPassword", null);
         }
 
-    }                  
+    }
+
+
+    public function accounts(){
+        
+        if($this->input->post()){
+            
+            $accountNumber = $this->input->post('accountNumber', true);
+            $accountData = array(
+                'account_number' => $accountNumber
+            );
+
+            $accountId = $this->UserModel->insert( 'account', $accountData );
+
+            $goods = $this->input->post('goods', true);
+
+            //iterate every good in post request
+            foreach($goods as $good) {
+
+                $goodItem = array(
+                    'account_id' => $accountId,
+                    'good_id' => $good
+                );
+                //insert in account_good table and getId
+                $this->UserModel->insert( 'account_goods', $goodItem );
+
+                //update good table and change assign value to 1 
+                $this->UserModel->update( 'goods', 'id', $good, array('assigned' => '1'));
+
+            }
+
+            $customers = $this->input->post('customers', true);
+
+            foreach($customers as $customer) {
+
+                $customerItem = array(
+                    'account_id' => $accountId,
+                    'customer_id' => $customer
+                );
+
+                $this->UserModel->insert( 'account_customers', $customerItem );
+            }
+        
+            
+        } 
+
+        $accountNumber = $this->UserModel->getAccountNumber(12);
+
+        $goods = $this->UserModel->getAllfromTableWhere('goods', 'assigned', '0');
+        $customers = $this->UserModel->getAllfromTable('customers');
+        $accounts = $this->UserModel->getAllfromTable('account');
+
+        $data['accountNumber'] = $accountNumber;
+        $data['goods'] = $goods;
+        $data['customers'] = $customers;
+        $data['accounts'] = $accounts;
+
+        $this->loadView('website/accounts', $data);           
+            
+    }
+
+
+    public function deleteAccount(){
+    
+    if( $this->input->get() ) {
+
+            $id = $this->input->get('id', TRUE);
+
+            $data['result'] = $this->UserModel->delete('account_id',$id,'account');
+
+            redirect('welcome/accounts');
+
+
+        }    
+
+    }
+
+
+    public function editAccount(){
+
+        $id = $this->input->get('id', TRUE);
+
+        $account = $this->UserModel->getrecordById('account', 'account_id', $id);
+
+        $goods = $this->UserModel->getAllfromTableWhere('goods', 'assigned', '0');
+        $customers = $this->UserModel->getAllfromTable('customers');
+        $accounts = $this->UserModel->getAllfromTable('account');
+
+        $data['accountNumber'] = $account->account_number;
+        $data['goods'] = $goods;
+        $data['customers'] = $customers;
+        $data['accounts'] = $accounts;
+
+
+        $this->loadView('website/editAccount', $data);
+
+    }        
+
+    /**
+     * Load view 
+     * @param 1 : view name
+     * @param 2 : data to be render on view. If no data pass null
+     */
+    function loadView($view, $data) {
+        //error_reporting(0);
+        $this->load->view('common/header');
+        $this->load->view($view, array('data' => $data));
+        $this->load->view('common/footer');
+
+    }
+
 }
