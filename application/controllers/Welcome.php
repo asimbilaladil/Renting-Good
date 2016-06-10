@@ -244,9 +244,6 @@ class Welcome extends CI_Controller {
                 $this->load->view('common/footer');
             }
 
-        
-       
-
     }    
     public function userLoginStatus()
     {
@@ -408,23 +405,60 @@ class Welcome extends CI_Controller {
                 $this->UserModel->insert( 'account_customers', $customerItem );
             }
         
-            $this->loadView('website/accounts', null);
+            
+        } 
 
-        } else {
-            $accountNumber = $this->UserModel->getAccountNumber(12);
+        $accountNumber = $this->UserModel->getAccountNumber(12);
 
-            $goods = $this->UserModel->getAllfromTableWhere('goods', 'assigned', '0');
-            $customers = $this->UserModel->getAllfromTable('customers');
+        $goods = $this->UserModel->getAllfromTableWhere('goods', 'assigned', '0');
+        $customers = $this->UserModel->getAllfromTable('customers');
+        $accounts = $this->UserModel->getAllfromTable('account');
 
-            $data['accountNumber'] = $accountNumber;
-            $data['goods'] = $goods;
-            $data['customers'] = $customers;
+        $data['accountNumber'] = $accountNumber;
+        $data['goods'] = $goods;
+        $data['customers'] = $customers;
+        $data['accounts'] = $accounts;
 
-            $this->loadView('website/accounts', $data);           
-            }
+        $this->loadView('website/accounts', $data);           
+            
     }
 
 
+    public function deleteAccount(){
+    
+    if( $this->input->get() ) {
+
+            $id = $this->input->get('id', TRUE);
+
+            $data['result'] = $this->UserModel->delete('account_id',$id,'account');
+
+            redirect('welcome/accounts');
+
+
+        }    
+
+    }
+
+
+    public function editAccount(){
+
+        $id = $this->input->get('id', TRUE);
+
+        $account = $this->UserModel->getrecordById('account', 'account_id', $id);
+
+        $goods = $this->UserModel->getAllfromTableWhere('goods', 'assigned', '0');
+        $customers = $this->UserModel->getAllfromTable('customers');
+        $accounts = $this->UserModel->getAllfromTable('account');
+
+        $data['accountNumber'] = $account->account_number;
+        $data['goods'] = $goods;
+        $data['customers'] = $customers;
+        $data['accounts'] = $accounts;
+
+
+        $this->loadView('website/editAccount', $data);
+
+    }        
 
     /**
      * Load view 
