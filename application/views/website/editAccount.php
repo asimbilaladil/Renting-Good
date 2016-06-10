@@ -73,47 +73,12 @@
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="cs-btn-submit">
-                  <input type="submit" value="Add">
+                  <input type="submit" value="Update">
                 </div>
               </div>
           </div>
           </form>
         </div>
-        <!--Element Section Start-->
-        <!--Element Section Start-->
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="cs-signup-form">
-            <div class="cs-field-holder  col-sm-4">
-              <h2>List Of Goods</h2>
-              <input name="name" type="text" placeholder="Search *" id="filterTable-input" data-type="search"   >
-            </div>
-            <table data-role="table" class=" table"  data-filter="true" data-input="#filterTable-input">
-              <thead>
-                <tr>
-                  <th>Account Number</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                  foreach($data['accounts'] as $item) {
-                      echo 
-                          '<tr>
-                              <td> '. $item->account_number .'</td>
-                              <td><a href="'. site_url('welcome/editAccount?id=' . $item->account_id ) .' "><span class="icon-pencil"></span> </a> 
-                                       <span>&nbsp;&nbsp;</span>
-                                  <a href="'. site_url('welcome/deleteAccount?id=' . $item->account_id ) .' "><span class="icon-trash"></span> </a> 
-                  
-                               </td>
-                          </tr>';
-                  
-                  }
-                  ?>                  
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!--Element Section End-->
       </div>
     </div>
   </div>
