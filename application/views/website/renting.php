@@ -37,7 +37,7 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="cs-field-holder"> 
                   </br>                    
-                  <select onchange="onDutyChange()" name="accountId" id="accountId">
+                  <select onchange="onDutyChange()" name="accountId" id="accountId" required>
                   <?php
                     foreach ($data['accounts'] as $account) {
                         echo '<option value="' . $account->account_id . '"> '. $account->account_number .' </option>';
@@ -50,27 +50,29 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="cs-field-holder">  
                 </br>                 
-                  <select name="goods" id="goods">
+                  <select name="goods" id="goods" placeholder="Goods" required>
+                    <option value="" default selected>Goods</option>
                   </select>
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="cs-field-holder">  
                   </br>                   
-                  <select  name="customers" id="customers">
+                  <select  name="customers" id="customers" required>
+                    <option value="" default selected>Customers</option>
                   </select>
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="cs-field-holder">  
                   </br>                   
-                  <input type="date" id="startDate" name="startDate" />
+                  <input type="date" id="startDate" name="startDate" placeholder="Start Date"required />
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="cs-field-holder">
                   </br>  
-                  <select name="timeInterval">
+                  <select name="timeInterval" required>
                     <option value="7"> 7 Days </option>
                     <option value="14"> 14 Days </option>
                   </select>
@@ -78,25 +80,14 @@
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="cs-field-holder">
-                  </br>  
-                  <select name="paymentTimes">
-                    <option value="1"> 1 Time </option>
-                    <option value="2"> 2 Times </option>
-                    <option value="3"> 3 Times </option>
-                    <option value="4"> 4 Times </option>
-                    <option value="5"> 5 Times </option>
-                    <option value="6"> 6 Times </option>
-                    <option value="7"> 7 Times </option>
-                    <option value="8"> 8 Times </option>
-                    <option value="9"> 9 Times </option>
-                    <option value="10"> 10 Times </option>
-                  </select>
+                  </br>
+                  <input name="paymentTimes" type="number" placeholder="Payment Times" required/>  
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="cs-field-holder">  
                   </br>                   
-                  <input name="amount" type="number" />
+                  <input name="amount" type="number" placeholder="Amount" required/>
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -156,6 +147,10 @@
   </div>
 </div>
 <script>
+window.onload = function() {
+  onDutyChange();
+};
+
   function onDutyChange() {
   
       var state =  $('#accountId').val();

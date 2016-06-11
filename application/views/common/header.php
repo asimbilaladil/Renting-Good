@@ -105,6 +105,7 @@
                     <li><a href="<?php echo site_url('Welcome/Customers'); ?>">Customers</a></li>
                     <li><a href="<?php echo site_url('Welcome/accounts'); ?>">Accounts</a></li>
                     <li><a href="<?php echo site_url('renting'); ?>">Renting</a></li>
+                    <li><a href="<?php echo site_url('dues'); ?>">Dues</a></li>
                     <li><a href="<?php echo site_url('Welcome/news'); ?>">Report</a></li>
 
                   </ul>
