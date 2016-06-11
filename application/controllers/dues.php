@@ -31,11 +31,27 @@ class Dues extends CI_Controller
         $rendIds = $this->DuesModel->getDuesByRentIds($dues);
 
         $data['details'] = $this->DuesModel->getDuesDetail($rendIds);
-/*        print_r($details);
-
-        die;*/
 
         $this->loadView('website/dues', $data);
+    }
+
+    public function payment() {
+        $data['rentId'] = $this->input->get('id', TRUE);
+
+        $this->loadView('website/update-payment', $data);
+    }
+
+    public function insertPayment() {
+        print_r($this->input->post());
+
+        $data = array(
+            'rent_id' => $this->input->post('rendId', true),
+            'paid' => $this->input->post('payment', true),
+            'date' => date('Y-m-d')
+        );
+
+        $this->PaymentModel->insert($data);
+        redirect('dues');
     }
 
 

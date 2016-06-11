@@ -49,6 +49,7 @@
                 <th>Time Interval</th>
                 <th>Payment Times</th>
                 <th>Amount</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -61,7 +62,8 @@
                   <td> '. $due->start_date .' </td>
                   <td> '. $due->time_interval .' </td>
                   <td> '. $due->payment_times .' </td>
-                  <td> '. $due->amount .' </td>               
+                  <td> '. $due->amount .' </td>
+                  <td> <a href="'. site_url('dues/payment?id=' . $due->id ) .' "> DUE </a> </td>             
                 </tr>';
               }
             ?>

@@ -72,7 +72,7 @@ class DuesModel extends CI_Model
 
     public function getDuesDetail($accountIds) {
         $query = $this->db->query(
-            'SELECT account.account_number, customers.fname, goods.manufacturer, renting.start_date, renting.amount, renting.time_interval, renting.payment_times
+            'SELECT account.account_number, customers.fname, goods.manufacturer, renting.start_date, renting.amount, renting.time_interval, renting.payment_times, renting.id
             FROM renting, account, customers, goods
             WHERE renting.account_id = account.account_id
             AND renting.good_id = goods.id
