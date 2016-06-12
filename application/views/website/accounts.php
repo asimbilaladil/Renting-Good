@@ -30,6 +30,16 @@
         </div>
         <!--Element Section Start-->
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <?php if (isset($_GET["message"] )) { ?>
+        <?php if ($_GET["message"] == 'goods') { ?>
+                <div class="alert alert-danger" id="alert" >
+  <strong>Error!</strong> Account can't be deleted because accounts goods are on rent.
+</div>
+<?php } else if ($_GET["message"] == 'customers') {?>
+                <div class="alert alert-danger" id="alert" >
+  <strong>Error!</strong> Account can't be deleted because accounts customers are in rent record.
+</div>
+<?php } } ?>
           <div class="cs-signup-form">
             <h6>Add Account</h6>
             <form action="<?php echo site_url('Welcome/accounts') ?>" method="post">

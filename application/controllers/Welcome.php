@@ -429,10 +429,45 @@ class Welcome extends CI_Controller {
     if( $this->input->get() ) {
 
             $id = $this->input->get('id', TRUE);
+            $getAssignedAccountGoods = $this->UserModel->getAssignedAccountGoods( $id );
+            $getAssignedAccountCustomers = $this->UserModel->getAssignedAccountCustomers( $id );
+            $selectedgoods = $this->UserModel->getSelectedGoods( $id );
+            $selectedCustomerIds = $this->UserModel->getSelectedCustomers( $id );
+            $goodsCount = $customerCount = 0;
 
-            $data['result'] = $this->UserModel->delete('account_id',$id,'account');
+           
+            //iterate every good in post request
+            foreach($selectedgoods as $good) {
 
-            redirect('welcome/accounts');
+                //update good table and change assign value to 1 
+                if(in_array($good->id, $getAssignedAccountGoods)){
+                     redirect('welcome/accounts?message=goods');
+                } else {
+                    $goodsCount++;
+
+                }
+
+            }  
+
+            //iterate every good in post request
+            foreach($selectedCustomerIds as $customer) {
+
+                //update good table and change assign value to 1 
+                if(in_array($customer, $getAssignedAccountCustomers)){
+                    redirect('welcome/accounts?message=customers');
+                } else {
+                    $customerCount++;
+                }
+
+            }                        
+            if ( ( $goodsCount == count($selectedgoods) ) &&   ( $goodsCount == count($selectedgoods) ) ){
+               
+                $data['result'] = $this->UserModel->delete('account_id',$id,'account');
+
+                redirect('welcome/accounts');
+
+            }
+
 
 
         }    
