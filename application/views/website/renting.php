@@ -31,7 +31,7 @@
       <!--Element Section Start-->
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="cs-signup-form">
-        <h6>Renting</h6>
+          <h6>Renting</h6>
           <form action="<?php echo site_url('renting/save') ?>" method="post">
             <div class="row">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -48,15 +48,15 @@
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="cs-field-holder">  
-                </br>                 
+                <div class="cs-field-holder">
+                  </br>                 
                   <select name="goods" id="goods" placeholder="Goods" required>
                     <option value="" default selected>Goods</option>
                   </select>
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="cs-field-holder">  
+                <div class="cs-field-holder">
                   </br>                   
                   <select  name="customers" id="customers" required>
                     <option value="" default selected>Customers</option>
@@ -99,30 +99,29 @@
             </div>
           </form>
         </div>
-
         <!--Element Section End-->
-   </div>
-        <!--Element Section Start-->
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="cs-signup-form">
-            <div class="cs-field-holder  col-sm-4">
-              <h2>List of Renting</h2>
-              <input name="name" type="text" placeholder="Search *" id="filterTable-input" data-type="search"   >
-            </div>
-            <table data-role="table" class=" table"  data-filter="true" data-input="#filterTable-input">
-              <thead>
-                <tr>
-                  <th>Account No#</th>
-                  <th>Customer</th>
-                  <th>Good Manufacturer</th>
-                  <th>Start Date</th>
-                  <th>Time Interval</th>
-                  <th>Payment Times</th>
-                  <th>Amount</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
+      </div>
+      <!--Element Section Start-->
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="cs-signup-form">
+          <div class="cs-field-holder  col-sm-4">
+            <h2>List of Renting</h2>
+            <input name="name" type="text" placeholder="Search *" id="filterTable-input" data-type="search"   >
+          </div>
+          <table data-role="table" class=" table"  data-filter="true" data-input="#filterTable-input">
+            <thead>
+              <tr>
+                <th>Account No#</th>
+                <th>Customer</th>
+                <th>Good Manufacturer</th>
+                <th>Start Date</th>
+                <th>Time Interval</th>
+                <th>Payment Times</th>
+                <th>Amount</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
               <?php
                 foreach($data['renting'] as $rent){
                   echo '<tr>
@@ -135,40 +134,44 @@
                   <td> '. $rent->amount .' </td>
                   <td><a href="'. site_url('?id=' . $rent->id ) .' "><span class="icon-pencil"></span> </a> 
                                        <span>&nbsp;&nbsp;</span>
-                                  <a href="'. site_url('?id=' . $rent->id ) .' "><span class="icon-trash"></span> </a> </td>
-                  </tr>';
+                                  <a href="'. site_url('?id=' . $rent->id ) .' "><span class="icon-trash"></span> </a>
+                                    <span>&nbsp;&nbsp;</span>
+                                  <a href="'. site_url('report?id=' . $rent->id ) .' "><span class="icon-trash"></span> </a>
+                                   </td>
+                  </tr>'; 
                 }
-              ?>
-              </tbody>
-            </table>
-          </div>
-        </div>   
+                ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+      
   </div>
 </div>
 <script>
-window.onload = function() {
-  onDutyChange();
-};
-
-  function onDutyChange() {
+  window.onload = function() {
+    onDutyChange();
+  };
   
-      var state =  $('#accountId').val();
-  
-      $.post('<?php echo site_url('renting/getGoodsByAccount') ?>', {
-          state: state
-      }, function(data) {
-         $('#goods').show().html(data);
-      });
-  
-  
-      $.post('<?php echo site_url('renting/getCustomerByAccount') ?>', {
-          state: state
-      }, function(data) {
-         $('#customers').show().html(data);
-      });    
-  
-  }
-  
-  
+    function onDutyChange() {
+    
+        var state =  $('#accountId').val();
+    
+        $.post('<?php echo site_url('renting/getGoodsByAccount') ?>', {
+            state: state
+        }, function(data) {
+           $('#goods').show().html(data);
+        });
+    
+    
+        $.post('<?php echo site_url('renting/getCustomerByAccount') ?>', {
+            state: state
+        }, function(data) {
+           $('#customers').show().html(data);
+        });    
+    
+    }
+    
+    
 </script>

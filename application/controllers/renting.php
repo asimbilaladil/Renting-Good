@@ -12,6 +12,7 @@ class Renting extends CI_Controller
         $this->load->model('RentModel');
         $this->load->model('UserModel');
         $this->load->model('AccountModel');
+        $this->load->model('PaymentModel');
         
         if ($this->session->userdata('id') > -1) {
             $this->load->model('RentModel');
@@ -79,7 +80,15 @@ class Renting extends CI_Controller
             'amount' => $this->input->post('amount', true),
         );
 
-        $this->RentModel->insert($data);
+        $rendId = $this->RentModel->insert($data);
+
+        $paymentData = array(
+            'rent_id' => $rendId,
+            'paid' => $this->input->post('amount', true),
+            'date' => $this->input->post('startDate', true)
+        );
+
+        $this->PaymentModel->insert($paymentData);
 
         redirect('renting');
     }

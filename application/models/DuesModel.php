@@ -38,7 +38,7 @@ class DuesModel extends CI_Model
 
                 $accounts = $this->PaymentModel->getById( 'rent_id', $rent->id );
 
-                $amountPayable = $time * $rent->amount;
+                $amountPayable = ($time+1) * $rent->amount; // add 1 in time to count the 1st payment that is drop in the table when renting
 
                 $totalPaidAmount = '';
 
@@ -88,7 +88,11 @@ class DuesModel extends CI_Model
     public function dateDifference($startDate, $todayDate)
     {
         $dStart = new DateTime($startDate);
+
         $dEnd   = new DateTime($todayDate);
+
+        $dEnd->modify('+1 day');
+
         $dDiff  = $dStart->diff($dEnd);
         $diffInDays = (int)$dDiff->format("%r%a"); // use for point out relation: smaller/greater
 
