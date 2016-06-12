@@ -30,7 +30,11 @@ class Dues extends CI_Controller
 
         $rendIds = $this->DuesModel->getDuesByRentIds($dues);
 
-        $data['details'] = $this->DuesModel->getDuesDetail($rendIds);
+        if($rendIds == '') {
+            $rendIds = 0;            
+        }
+
+        $data['details'] = $this->DuesModel->getDuesDetail($rendIds); 
 
         $this->loadView('website/dues', $data);
     }
