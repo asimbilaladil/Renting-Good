@@ -441,7 +441,89 @@ class Welcome extends CI_Controller {
 
 
     public function editAccount(){
+        if($this->input->post()){
+            
+            $id = $this->input->post('accountNumber', true);
+            $goods = $this->input->post('goods', true);
 
+            $customers = $this->input->post('customers', true);
+    
+            $getAssignedAccountGoods = $this->UserModel->getAssignedAccountGoods( $id );
+            $getAssignedAccountCustomers = $this->UserModel->getAssignedAccountCustomers( $id );
+            $selectedgoods = $this->UserModel->getSelectedGoods( $id );
+            $selectedCustomerIds = $this->UserModel->getSelectedCustomers( $id );
+
+
+            //iterate every good in post request
+            foreach($selectedgoods as $good) {
+
+                //update good table and change assign value to 1 
+                if(in_array($good->id, $getAssignedAccountGoods)){
+                } else {
+
+                    $this->UserModel->update( 'goods', 'id', $good->id , array('assigned' => '0'));
+                    $this->UserModel->deleteWithDualCondition('account_id',$id , 'good_id',$good->id, 'account_goods');
+                }
+
+            }
+
+            //iterate every good in post request
+            foreach($goods as $good) {
+                
+                if(in_array($good, $getAssignedAccountGoods)){
+                } else {
+
+                    $this->UserModel->deleteWithDualCondition('account_id',$id , 'good_id', $good, 'account_goods');
+
+                    $goodItem = array(
+                        'account_id' => $id,
+                        'good_id' => $good
+                    );
+                    //insert in account_good table and getId
+                    $this->UserModel->insert( 'account_goods', $goodItem );
+                    //update good table and change assign value to 1 
+                    $this->UserModel->update( 'goods', 'id', $good, array('assigned' => '1'));
+
+                }
+
+
+            }
+
+            //iterate every good in post request
+            foreach($selectedCustomerIds as $customer) {
+
+                //update good table and change assign value to 1 
+                if(in_array($customer, $getAssignedAccountCustomers)){
+
+                } else {
+
+                    $this->UserModel->deleteWithDualCondition('account_id',$id , 'customer_id',$customer, 'account_customers');
+                }
+
+            }            
+            foreach($customers as $customer) {
+
+                if(in_array($customer, $getAssignedAccountCustomers)){
+
+                } else {
+
+                    $this->UserModel->deleteWithDualCondition('account_id',$id , 'customer_id', $customer, 'account_customers');
+                    $customerItem = array(
+                        'account_id' => $id,
+                        'customer_id' => $customer
+                    );
+
+                    $this->UserModel->insert( 'account_customers', $customerItem );
+                }
+               
+            }
+        
+            redirect('welcome/accounts');
+
+        }             
+
+
+        
         $id = $this->input->get('id', TRUE);
 
         $account = $this->UserModel->getrecordById('account', 'account_id', $id);
@@ -449,16 +531,22 @@ class Welcome extends CI_Controller {
         $goods = $this->UserModel->getAllfromTableWhere('goods', 'assigned', '0');
         $customers = $this->UserModel->getAllfromTable('customers');
         $accounts = $this->UserModel->getAllfromTable('account');
+        $selectedCustomerIds = $this->UserModel->getSelectedCustomers( $id );
+        $selectedgoods = $this->UserModel->getSelectedGoods( $id );
+        $getAssignedAccountGoods = $this->UserModel->getAssignedAccountGoods( $id );
+        $getAssignedAccountCustomers = $this->UserModel->getAssignedAccountCustomers( $id );
 
         $data['accountNumber'] = $account->account_number;
         $data['goods'] = $goods;
         $data['customers'] = $customers;
         $data['accounts'] = $accounts;
-
-
+        $data['selectedCustomerIds'] = $selectedCustomerIds;
+        $data['selectedgoods'] =  $selectedgoods ;
+        $data['getAssignedAccountGoods'] = $getAssignedAccountGoods;
+        $data['getAssignedAccountCustomers'] = $getAssignedAccountCustomers;
         $this->loadView('website/editAccount', $data);
 
-    }        
+    }       
 
     /**
      * Load view 

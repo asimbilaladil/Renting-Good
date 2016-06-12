@@ -261,6 +261,58 @@ class UserModel extends CI_Model
         } while ($rnd >= $range);
         return $min + $rnd;
     }    
+    public function getSelectedCustomers( $id ) {
 
+        $query = $this->db->query( 'Select id from customers where id in (Select customer_id from account_customers where account_id ='. $id .' )' );
+
+        $customers = $query->result();
+        $customersIds = [];
+        foreach ( $customers as $key => $value) {
+            array_push( $customersIds , $value->id);
+        }
+        return $customersIds;
+
+    } 
+    public function getSelectedGoods( $id ) {
+
+        $query = $this->db->query( 'Select * from goods where id in (Select good_id from account_goods where account_id ='. $id .' )' );
+
+        $query->result();
+
+        return $query->result();
+
+    } 
+    public function getAssignedAccountCustomers( $id ) {
+
+        $query = $this->db->query( 'Select customer_id from renting where  account_id ='. $id );
+
+        $customers = $query->result();
+        $customersIds = [];
+        foreach ( $customers as $key => $value) {
+            array_push( $customersIds , $value->customer_id);
+        }
+        return $customersIds;
+
+    }         
+    public function getAssignedAccountGoods( $id ) {
+
+        $query = $this->db->query( 'Select good_id from renting where  account_id ='. $id  );
+
+        $goods = $query->result();
+        $goodsIds = [];
+        foreach ( $goods as $key => $value) {
+            array_push( $goodsIds , $value->good_id);
+        }
+        return $goodsIds;
+
+    }
+    public function deleteWithDualCondition(  $whereParam1, $whereParam2, $whereParam3, $whereParam4, $tableName ) {
+
+        $this->db->delete( $tableName , array( 
+            $whereParam1 => $whereParam2 ,
+            $whereParam3 => $whereParam4 ,
+            ) );     
+
+    }      
 
 }
