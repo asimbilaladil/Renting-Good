@@ -30,7 +30,6 @@ class Renting extends CI_Controller
 
         $data['renting'] = $this->RentModel->getRentingList();
 
-
         $this->loadView('website/renting', $data);
     }
 
