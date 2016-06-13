@@ -30,7 +30,7 @@ class Report extends CI_Controller
 
         $data['report'] = $this->ReportModel->reporting($id);
 
-
+        $data['rendDetail'] = $this->RentModel->getRentDetailById($id);
 
         $this->loadView('website/report', $data);
     }
