@@ -25,67 +25,82 @@ class ReportModel extends CI_Model
         $amountPaid = '';
         $amountDue = '';
 
-        $test = array();
         $previousDate = '';
-        $count = $paymentTimes;
-        for($i=0; $i<=$count; $i++) {
+
+        $datesArray = array();
+        $paymentDates = array();
+
+        //push normal dates
+        for($i=0; $i<=$paymentTimes; $i++) {
+
+            $previousDate = $startDate->format('Y-m-d');
+            $nextDate = $startDate->modify('+' . $timeInterval . ' day')->format('Y-m-d');
+
+            array_push($datesArray, $previousDate);
+            array_push($datesArray, $nextDate);
+        }
+
+        //push payments dates
+        foreach($payments as $payment) {
+            //$paymentDate = new DateTime($payment->date);
+            array_push($paymentDates, $payment->date);
+            //array_push($paymentDates, $paymentDate->format('d-m-Y'));
+        }
+
+        //merge arrays
+        $datesList = array_merge($datesArray, $paymentDates);
+
+        //unique them
+        $datesList = array_unique($datesList);
+
+        //sort them
+        usort($datesList, function($a1, $a2) {
+           $v1 = strtotime($a1);
+           $v2 = strtotime($a2);
+           return $v1 - $v2; // $v2 - $v1 to reverse direction
+        });
+
+        $reporting = array();
+        $preDate = $rentDetail->start_date;
+        $totalAmountToPaid = $rentDetail->amount * ($paymentTimes + 1);
+        foreach ($datesList as $date) {
+            $object = new stdClass();
+            $paymentItem = $this->getPaymentByIdAndDate('rent_id', $id, 'date', $date);
+
             $amountDue = $amountDue + $rentDetail->amount;
-            $previousDate = $startDate->format('Y-m-d');  //store date before increment
 
-            $startDate->modify('+' . $timeInterval . ' day')->format('Y-m-d'); // increment date by time interval
-            $date = date_format($startDate, 'Y-m-d'); //future date
-
-            $paymentInDate = $this->getPaymentInBetween($previousDate, $date, $id);
-
-            $totalAmountToPaid = $rentDetail->amount * ($paymentTimes + 1);
-            //$amountDue can not be greater then amount to be paid
-            if( $amountDue > $totalAmountToPaid ) {
+            if( $amountDue > $totalAmountToPaid) {
                 $amountDue = $totalAmountToPaid;
             }
 
-            $object = new stdClass();
-            $object->due = $rentDetail->amount;
-
-            if( count($paymentInDate) > 0 ) {
-
-                foreach ($paymentInDate as $item) {
-                    $count++;
-                    $object = new stdClass();
-                    $amountPaid = $amountPaid + $item->paid;
-                    $object->date = $item->date;
-                    $object->amountPaid = $amountPaid;
-                    $object->amountDue = $amountDue;
-                    $object->due = '';
-                    if($previousDate == $item->date) {
-                        $object->due =  $rentDetail->amount;
-                    }
-                    $object->paid = $item->paid;
-
-                    if($amountPaid >= $amountDue) {
-                        $object->arrears = 'N';
-                    } else {
-                        $object->arrears = 'Y';
-                    }
-
-                    array_push($test, $object);
-                }     
-
-            } else {
-                    
-                $object->date = $previousDate;
-                $object->amountPaid = $amountPaid;
-                $object->amountDue = $amountDue;
-                $object->paid = '';
-                if($amountPaid >= $amountDue) {
-                    $object->arrears = 'N';
-                } else {
-                    $object->arrears = 'Y';
-                }                
-                array_push($test, $object);
+            $object->date = $date;
+            $object->paid = '';
+            $object->due = '';
+            $object->arrears = 'N';
+            if( count($paymentItem) > 0 ){
+                $object->paid = $paymentItem->paid;
+                $amountPaid = $amountPaid + $paymentItem->paid;
             }
-        }   
 
-        return $test;
+            $diff = $this->dateDifference($preDate, $date);
+            
+            //normal days. If difference is $timeInterval i.e 7 or 14 or it 0 then it is normal day
+            if($diff == $timeInterval || $diff == 0) {
+                $preDate = $date;
+                $object->due = $rentDetail->amount;
+            }
+
+            //if amount paid is greater then there is no arrears
+            if($amountPaid < $amountDue) {
+                $object->arrears = 'Y';
+            }
+
+            array_push( $reporting, $object);
+
+        }
+
+        return $reporting;
+
     }
 
 
@@ -110,6 +125,18 @@ class ReportModel extends CI_Model
         return $result;
     }
 
+
+    function getPaymentByIdAndDate( $param1, $id ,$param2, $date ) {
+
+        $this->db->select('*');
+        $this->db->from( 'payment' );
+        $this->db->where( $param1, $id );
+        $this->db->where( $param2, $date );
+        $quary_result=$this->db->get();
+        $result=$quary_result->row();
+        return $result;
+    }
+
     function getPaymentInBetween($startDate, $endDate, $id) {
         $query = $this->db->query(
             "SELECT * FROM payment
@@ -121,6 +148,19 @@ class ReportModel extends CI_Model
 
         return $query->result();        
 
+    }
+
+    public function dateDifference($startDate, $todayDate) {
+        $dStart = new DateTime($startDate);
+
+        $dEnd   = new DateTime($todayDate);
+
+/*        $dEnd->modify('+1 day');*/
+
+        $dDiff  = $dStart->diff($dEnd);
+        $diffInDays = (int)$dDiff->format("%r%a"); // use for point out relation: smaller/greater
+
+        return $diffInDays;
     }
 
 }
