@@ -27,8 +27,8 @@ class ReportModel extends CI_Model
 
         $test = array();
         $previousDate = '';
-
-        for($i=0; $i<=10; $i++) {
+        $count = $paymentTimes;
+        for($i=0; $i<=$count; $i++) {
             $amountDue = $amountDue + $rentDetail->amount;
             $previousDate = $startDate->format('Y-m-d');  //store date before increment
 
@@ -49,13 +49,16 @@ class ReportModel extends CI_Model
             if( count($paymentInDate) > 0 ) {
 
                 foreach ($paymentInDate as $item) {
-                    
+                    $count++;
                     $object = new stdClass();
                     $amountPaid = $amountPaid + $item->paid;
                     $object->date = $item->date;
                     $object->amountPaid = $amountPaid;
                     $object->amountDue = $amountDue;
-                    $object->due = ($i == 0 ? $rentDetail->amount : '' );  //for first time
+                    $object->due = '';
+                    if($previousDate == $item->date) {
+                        $object->due =  $rentDetail->amount;
+                    }
                     $object->paid = $item->paid;
 
                     if($amountPaid >= $amountDue) {
