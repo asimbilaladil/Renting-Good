@@ -67,7 +67,7 @@ class ReportModel extends CI_Model
             $object = new stdClass();
             $paymentItem = $this->getPaymentByIdAndDate('rent_id', $id, 'date', $date);
 
-            $amountDue = $amountDue + $rentDetail->amount;
+            
 
             if( $amountDue > $totalAmountToPaid) {
                 $amountDue = $totalAmountToPaid;
@@ -88,6 +88,7 @@ class ReportModel extends CI_Model
             if($diff == $timeInterval || $diff == 0) {
                 $preDate = $date;
                 $object->due = $rentDetail->amount;
+                $amountDue = $amountDue + $rentDetail->amount;
             }
 
             //if amount paid is greater then there is no arrears
@@ -98,7 +99,7 @@ class ReportModel extends CI_Model
             array_push( $reporting, $object);
 
         }
-
+        
         return $reporting;
 
     }
