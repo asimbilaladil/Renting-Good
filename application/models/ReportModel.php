@@ -31,7 +31,7 @@ class ReportModel extends CI_Model
         $paymentDates = array();
 
         //push normal dates
-        for($i=0; $i<=$paymentTimes; $i++) {
+        for($i=0; $i<$paymentTimes; $i++) {
 
             $previousDate = $startDate->format('Y-m-d');
             $nextDate = $startDate->modify('+' . $timeInterval . ' day')->format('Y-m-d');
@@ -99,7 +99,7 @@ class ReportModel extends CI_Model
             array_push( $reporting, $object);
 
         }
-        
+
         return $reporting;
 
     }
