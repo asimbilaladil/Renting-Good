@@ -43,10 +43,11 @@
                  
                                      <h2>List Of Customers</h2> 
                                
-                                    <input name="name" type="text" placeholder="Search *" id="filterTable-input" data-type="search"   >
+ <input type="text" name="name" class="form-control" id="search" placeholder="Type to search...">
+
 
                             </div>   
-                       <table data-role="table" class=" table"  data-filter="true" data-input="#filterTable-input">
+                       <table class="table table-striped" id="table">
     <thead>
       <tr>
         <th>No</th>

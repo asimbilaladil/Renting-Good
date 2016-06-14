@@ -8,9 +8,11 @@ class Welcome extends CI_Controller {
         parent::__construct();
         $id = $this->session->userdata('id');
         $this->load->model('UserModel');
+        $this->load->model('PaymentModel');
 
         if( $this->session->userdata('id') > -1  ) {
             $this->load->model('UserModel');
+            $this->load->model('PaymentModel');
 
         } else if ($this->session->userdata('id') == -1  ) {
 
@@ -368,13 +370,25 @@ class Welcome extends CI_Controller {
     public function accounts(){
         
         if($this->input->post()){
-            
+
             $accountNumber = $this->input->post('accountNumber', true);
             $accountData = array(
-                'account_number' => $accountNumber
+                'account_number' => $accountNumber,
+                'start_date' => $this->input->post('startdate', true),
+                'payment_times' => $this->input->post('paymentTimes', true),
+                'time_interval' => $this->input->post('timeInterval', true),
+                'amount' => $this->input->post('amount', true)
             );
 
             $accountId = $this->UserModel->insert( 'account', $accountData );
+
+            $paymentData = array(
+                'account_id' => $accountId,
+                'date' => $this->input->post('startdate', true),
+                'paid' => $this->input->post('amount', true)
+            );
+
+            $this->PaymentModel->insert($paymentData);
 
             $goods = $this->input->post('goods', true);
 
