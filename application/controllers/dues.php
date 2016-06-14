@@ -28,28 +28,27 @@ class Dues extends CI_Controller
 
         $dues = $this->DuesModel->getDues();
 
-        $rendIds = $this->DuesModel->getDuesByRentIds($dues);
+        $accountIds = $this->DuesModel->getDuesByAccountIds($dues);
 
-        if($rendIds == '') {
-            $rendIds = 0;            
+        if($accountIds == '') {
+            $accountIds = 0;            
         }
 
-        $data['details'] = $this->DuesModel->getDuesDetail($rendIds); 
+        $data['details'] = $this->DuesModel->getDuesDetail($accountIds); 
 
         $this->loadView('website/dues', $data);
     }
 
     public function payment() {
-        $data['rentId'] = $this->input->get('id', TRUE);
+        $data['accountId'] = $this->input->get('id', TRUE);
 
         $this->loadView('website/update-payment', $data);
     }
 
     public function insertPayment() {
-        print_r($this->input->post());
 
         $data = array(
-            'rent_id' => $this->input->post('rendId', true),
+            'account_id' => $this->input->post('accountId', true),
             'paid' => $this->input->post('payment', true),
             'date' => date('Y-m-d')
         );

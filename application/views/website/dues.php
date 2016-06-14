@@ -43,8 +43,6 @@
             <thead>
               <tr>
                 <th>Account No#</th>
-                <th>Customer</th>
-                <th>Good Manufacturer</th>
                 <th>Start Date</th>
                 <th>Time Interval</th>
                 <th>Payment Times</th>
@@ -57,13 +55,11 @@
               foreach ($data['details'] as $due) {
                 echo '<tr>
                   <td> '. $due->account_number .' </td>
-                  <td> '. $due->fname .' </td>
-                  <td> '. $due->manufacturer .' </td>
                   <td> '. $due->start_date .' </td>
                   <td> '. $due->time_interval .' </td>
                   <td> '. $due->payment_times .' </td>
                   <td> '. $due->amount .' </td>
-                  <td> <a href="'. site_url('dues/payment?id=' . $due->id ) .' "> DUE </a> </td>             
+                  <td> <a href="'. site_url('dues/payment?id=' . $due->account_id ) .' "> DUE </a> </td>             
                 </tr>';
               }
             ?>

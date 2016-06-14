@@ -37,7 +37,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div class="cs-field-holder">
                     <input name="payment" type="text" placeholder="Payment Amount *" required>
-                    <input type="hidden" id="rentId" name="rendId" value="<?php echo $data['rentId'] ?>" /> 
+                    <input type="hidden" id="accountId" name="accountId" value="<?php echo $data['accountId'] ?>" /> 
                   </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
