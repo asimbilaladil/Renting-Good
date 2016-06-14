@@ -16,39 +16,39 @@ class DuesModel extends CI_Model
     public function getDues()
     {
         
-        $rents     = $this->RentModel->selectAll();
+        $accounts = $this->AccountModel->selectAll();
         $todayDate = date('Y-m-d');
         
         $duesArray = array();
         
-        foreach ($rents as $rent) {
-            $dateDifference = $this->dateDifference($rent->start_date, $todayDate);
+        foreach ($accounts as $account) {
+            $dateDifference = $this->dateDifference($account->start_date, $todayDate);
             
-            $time = $dateDifference / $rent->time_interval; //konsi bari chal rahi hai time interval ki
+            $time = $dateDifference / $account->time_interval; //konsi bari chal rahi hai time interval ki
             
             $time = (int)$time;
 
-            if( $time > $rent->payment_times ) {
-                $time = $rent->payment_times;
+            if( $time > $account->payment_times ) {
+                $time = $account->payment_times;
             }
 
             //payment times must be lesser then times
             //if ( $rent->payment_times >= $time && $time > 0) {
             if ( $time > 0) {
 
-                $accounts = $this->PaymentModel->getById( 'rent_id', $rent->id );
+                $payments = $this->PaymentModel->getById( 'account_id', $account->account_id );
 
-                $amountPayable = ($time+1) * $rent->amount; // add 1 in time to count the 1st payment that is drop in the table when renting
+                $amountPayable = ($time+1) * $account->amount; // add 1 in time to count the 1st payment that is drop in the table when renting
 
                 $totalPaidAmount = '';
 
-                foreach ( $accounts as $account ) {
+                foreach ( $payments as $payment ) {
 
-                    $totalPaidAmount = $totalPaidAmount + $account->paid;
+                    $totalPaidAmount = $totalPaidAmount + $payment->paid;
                 }
 
                 if( $totalPaidAmount < $amountPayable ) {
-                    array_push($duesArray, $rent);
+                    array_push($duesArray, $account);
                 }
             }
                     
@@ -58,12 +58,12 @@ class DuesModel extends CI_Model
 
     }
 
-    public function getDuesByRentIds($data) {
+    public function getDuesByAccountIds($data) {
 
         $accountId = '';
 
         foreach($data as $item) {
-            $accountId = $accountId . $item->id . ',';
+            $accountId = $accountId . $item->account_id . ',';
         }
 
         return $accountId = rtrim($accountId, ',');
@@ -72,12 +72,9 @@ class DuesModel extends CI_Model
 
     public function getDuesDetail($accountIds) {
         $query = $this->db->query(
-            'SELECT account.account_number, customers.fname, goods.manufacturer, renting.start_date, renting.amount, renting.time_interval, renting.payment_times, renting.id
-            FROM renting, account, customers, goods
-            WHERE renting.account_id = account.account_id
-            AND renting.good_id = goods.id
-            AND renting.customer_id = customers.id 
-            AND renting.id in (' . $accountIds . ')');
+            'SELECT account.account_id, account.account_number, account.amount, account.start_date, account.payment_times, account.time_interval
+                FROM account
+                WHERE account.account_id in (' . $accountIds . ')');
 
         $query->result();
 
