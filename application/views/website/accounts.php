@@ -31,15 +31,15 @@
         <!--Element Section Start-->
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <?php if (isset($_GET["message"] )) { ?>
-        <?php if ($_GET["message"] == 'goods') { ?>
-                <div class="alert alert-danger" id="alert" >
-  <strong>Error!</strong> Account can't be deleted because accounts goods are on rent.
-</div>
-<?php } else if ($_GET["message"] == 'customers') {?>
-                <div class="alert alert-danger" id="alert" >
-  <strong>Error!</strong> Account can't be deleted because accounts customers are in rent record.
-</div>
-<?php } } ?>
+          <?php if ($_GET["message"] == 'goods') { ?>
+          <div class="alert alert-danger" id="alert" >
+            <strong>Error!</strong> Account can't be deleted because accounts goods are on rent.
+          </div>
+          <?php } else if ($_GET["message"] == 'customers') {?>
+          <div class="alert alert-danger" id="alert" >
+            <strong>Error!</strong> Account can't be deleted because accounts customers are in rent record.
+          </div>
+          <?php } } ?>
           <div class="cs-signup-form">
             <h6>Add Account</h6>
             <form action="<?php echo site_url('Welcome/accounts') ?>" method="post">
@@ -80,11 +80,32 @@
                     </select>                    
                   </div>
                 </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="cs-field-holder">
+                    <input name="startdate" type="date" type="text" required>
+                  </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="cs-field-holder">
+                    <select name="paymentTimes" id="paymentTimes" required>
+                      <option value="7"> 7 days </option>
+                      <option value="14"> 14 days </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="cs-field-holder">
+                    <input name="timeInterval" placeholder="Payment Times" type="number" required>
+                  </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="cs-field-holder">
+                    <input name="amount" placeholder="Amount" type="number" required>
+                  </div>
+                </div>
               </div>
-                </br>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="cs-btn-submit">
-
                   <input type="submit" value="Add">
                 </div>
               </div>
@@ -93,14 +114,13 @@
         </div>
         <!--Element Section Start-->
         <!--Element Section Start-->
-
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="cs-signup-form">
             <div class="cs-field-holder  col-sm-4">
               <h2>List Of Goods</h2>
-              <input name="name" type="text" placeholder="Search *" id="filterTable-input" data-type="search"   >
+              <input name="name" type="text" id="search" placeholder="Search *" >
             </div>
-            <table data-role="table" class=" table"   data-filter="true" data-input="#filterTable-input">
+            <table class="table" id="table" >
               <thead>
                 <tr>
                   <th>Account Number</th>
