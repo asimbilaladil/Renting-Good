@@ -136,9 +136,10 @@
                               <td  class="col-lg-1 col-md-1 col-sm-1 col-xs-1"><a href="'. site_url('welcome/editAccount?id=' . $item->account_id ) .' "><span class="icon-pencil"></span> </a> 
                                        <span>&nbsp;&nbsp;</span>
                                   <a href="'. site_url('welcome/deleteAccount?id=' . $item->account_id ) .' "><span class="icon-trash"></span> </a> 
-                  
-                               </td>
-                          </tr>';
+                                <span>&nbsp;&nbsp;</span>
+                                 <a href="'. site_url('report?id=' . $item->account_id ) .' "><span class="icon-trash"></span> </a> 
+                                           </td>
+                                      </tr>';
                   
                   }
                   ?>                  
