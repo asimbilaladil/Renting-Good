@@ -15,12 +15,12 @@ class ReportModel extends CI_Model
 
     public function reporting($id) {
 
-        $payments = $this->getById('payment', 'rent_id', $id);
-        $rentDetail = $this->getRecordById('renting', 'id', $id);
-        $timeInterval = $rentDetail->time_interval;
-        $paymentTimes = $rentDetail->payment_times;
+        $payments = $this->getById('payment', 'account_id', $id);
+        $accountDetail = $this->getRecordById('account', 'account_id', $id);
+        $timeInterval = $accountDetail->time_interval;
+        $paymentTimes = $accountDetail->payment_times;
 
-        $startDate =  new DateTime($rentDetail->start_date);
+        $startDate =  new DateTime($accountDetail->start_date);
         
         $amountPaid = '';
         $amountDue = '';
@@ -61,11 +61,11 @@ class ReportModel extends CI_Model
         });
 
         $reporting = array();
-        $preDate = $rentDetail->start_date;
-        $totalAmountToPaid = $rentDetail->amount * ($paymentTimes + 1);
+        $preDate = $accountDetail->start_date;
+        $totalAmountToPaid = $accountDetail->amount * ($paymentTimes + 1);
         foreach ($datesList as $date) {
             $object = new stdClass();
-            $paymentItem = $this->getPaymentByIdAndDate('rent_id', $id, 'date', $date);
+            $paymentItem = $this->getPaymentByIdAndDate('account_id', $id, 'date', $date);
 
             
 
@@ -87,8 +87,8 @@ class ReportModel extends CI_Model
             //normal days. If difference is $timeInterval i.e 7 or 14 or it 0 then it is normal day
             if($diff == $timeInterval || $diff == 0) {
                 $preDate = $date;
-                $object->due = $rentDetail->amount;
-                $amountDue = $amountDue + $rentDetail->amount;
+                $object->due = $accountDetail->amount;
+                $amountDue = $amountDue + $accountDetail->amount;
             }
 
             //if amount paid is greater then there is no arrears
@@ -143,7 +143,7 @@ class ReportModel extends CI_Model
             "SELECT * FROM payment
             WHERE date < '". $endDate ."'
             AND date >= '". $startDate ."'
-            AND rent_id = " . $id );
+            AND account_id = " . $id );
 
         $query->result();
 
