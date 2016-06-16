@@ -79,11 +79,14 @@
                       ?>
                     </select>                    
                   </div>
+                  <br>
                 </div>
+
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div class="cs-field-holder">
                     <input name="startdate" type="date" type="text" required>
                   </div>
+                    <br>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div class="cs-field-holder">
@@ -91,17 +94,21 @@
                       <option value="7"> 7 days </option>
                       <option value="14"> 14 days </option>
                     </select>
+
                   </div>
+                    <br>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div class="cs-field-holder">
                     <input name="timeInterval" placeholder="Payment Times" type="number" required>
                   </div>
+                    <br>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div class="cs-field-holder">
                     <input name="amount" placeholder="Amount" type="number" required>
                   </div>
+                    <br>
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -137,7 +144,7 @@
                                        <span>&nbsp;&nbsp;</span>
                                   <a href="'. site_url('welcome/deleteAccount?id=' . $item->account_id ) .' "><span class="icon-trash"></span> </a> 
                                 <span>&nbsp;&nbsp;</span>
-                                 <a href="'. site_url('report?id=' . $item->account_id ) .' "><span class="icon-trash"></span> </a> 
+                                 <a href="'. site_url('report?id=' . $item->account_id ) .' "><span class="icon-desktop"></span> </a> 
                                            </td>
                                       </tr>';
                   

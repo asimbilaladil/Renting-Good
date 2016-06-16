@@ -48,8 +48,10 @@
             </form>
           </div>
         </li>
-        <li class="active"><a href="<?php echo site_url('Welcome/home'); ?>">Home</a></li>
-        <li><a href="<?php echo site_url('Welcome/news'); ?>">Latest News</a></li>
+                    <li><a href="<?php echo site_url('Welcome/Goods'); ?>">Goods</a></li>
+                    <li><a href="<?php echo site_url('Welcome/Customers'); ?>">Customers</a></li>
+                    <li><a href="<?php echo site_url('Welcome/accounts'); ?>">Accounts</a></li>
+                    <li><a href="<?php echo site_url('dues'); ?>">Dues</a></li>
       </ul>
     </div>
     <!-- Side Menu End -->
@@ -61,23 +63,15 @@
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             </div>
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+
               <div class="cs-user">
                 <ul>
-                  <?php if($id != '' ) { ?>
-                  <li>
-                    <div class="cs-user-login">
-                      <a href="#"><?php echo  $fullName; ?> </a>
-                      <ul>
-                        <li><a href="<?php echo base_url("/index.php/Welcome/logout") ?>"><i class="icon-log-out"></i> Logout</a></li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li></li>
-                  <?php } else { ?>
-                  <li><a href="<?php echo base_url("/index.php/login") ?> " ><i class="icon-login"></i>Login</a></li>
-                  <?php } ?>
+           <a href="<?php echo base_url("/index.php/Welcome/logout") ?>"><i class="icon-log-out"></i> Logout</a>
+                  
+                 
                 </ul>
               </div>
+
             </div>
           </div>
         </div>
@@ -104,9 +98,7 @@
                     <li><a href="<?php echo site_url('Welcome/Goods'); ?>">Goods</a></li>
                     <li><a href="<?php echo site_url('Welcome/Customers'); ?>">Customers</a></li>
                     <li><a href="<?php echo site_url('Welcome/accounts'); ?>">Accounts</a></li>
-                    <li><a href="<?php echo site_url('renting'); ?>">Renting</a></li>
                     <li><a href="<?php echo site_url('dues'); ?>">Dues</a></li>
-                    <li><a href="<?php echo site_url('Welcome/news'); ?>">Report</a></li>
 
                   </ul>
                 </nav>

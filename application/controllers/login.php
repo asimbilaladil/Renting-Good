@@ -15,9 +15,11 @@ class Login extends CI_Controller {
            
             $data = array (
                 'email' => $this->input->post('email', true),
-                'password' => md5($this->input->post('password', true) )
-            );
-            $result = $this->UserModel->user_login_check_info($data);
+                'password' => $this->input->post('password', true) 
+            ); 
+            $email = $this->input->post('email', true);
+            $password =  md5($this->input->post('password', true));
+            $result = $this->UserModel->user_login_check_info($email, $password);
 
             //if query found any result i.e userfound
             if($result) {
@@ -28,7 +30,7 @@ class Login extends CI_Controller {
                     $data['password'] = $result->password;
                     $data['fullname'] = $result->fullname;
                     $this->session->set_userdata($data);
-                   // redirect('welcome/goods');
+                    redirect('welcome/goods');
 
                 
             }else{
@@ -38,9 +40,9 @@ class Login extends CI_Controller {
 
 
         } else {
-            $this->load->view('common/header');
+         //   $this->load->view('common/header');
             $this->load->view('website/login');
-            $this->load->view('common/footer');
+           // $this->load->view('common/footer');
 
         }
 

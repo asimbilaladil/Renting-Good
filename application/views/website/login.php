@@ -1,40 +1,47 @@
- <div style="background:#ebebeb; padding:50px 0 35px;" class="page-section center">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="cs-page-title center">
-                        <h1>Login</h1>
-    
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div style="border-bottom:1px solid #f4f4f4;" class="page-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <ul class="cs-breadcrumb">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Login</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Main Start -->
-    <div class="main-section"> 
-        <div class="page-section">
-          <div class="container">
-            <div class="row">
-                 <div class="page-sidebar col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                        
-                    </div>
-                    <?php
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 2 | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>includes/bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="<?php echo base_url(); ?>includes/plugins/formValidation/css/formValidation.css"/>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>includes/dist/css/AdminLTE.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>includes/plugins/iCheck/square/blue.css">
+
+
+    <!-- jQuery 2.1.4 -->
+    <script src="<?php echo base_url(); ?>includes/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="login-logo">
+       <b>Admin Login</b>
+    </div><!-- /.login-logo -->
+    <div class="login-box-body">
+
+        <?php
             $login_message = $this->session->userdata('message');
             if ($login_message) {
 
-                echo "<div style='text-align: center;' class='alert alert-danger alert-dismissable'>
+                echo "<div style='text-align: center;' class='alert alert-success alert-dismissable'>
                                                          <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>
                                                                $login_message
                                                         </div>";
@@ -42,77 +49,81 @@
             }
         ?>
 
-                <!--Element Section Start-->
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <div class="cs-signup-form">
-                        <h6>login</h6>
-                        <form action="<?php echo site_url('Welcome/user_login_check') ?>" method="post">
-                            <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="cs-field-holder cs-has-error">
-                                    <i class="icon-user"></i>
-                                    <input name="email" type="text" placeholder="Username or email address *">
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="cs-field-holder">
-                                    <i class="icon-lock2"></i>
-                                    <input name="password" type="password" placeholder="Password *">
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="cs-btn-submit">
-                                    <input type="submit" value="Login">
-                                </div>
-                                <a data-toggle="modal" data-target="#myModal" class="cs-forgot-password" href="#">
-                                    <i class="cs-color icon-help-with-circle"></i>Forgot password?
-                                </a>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="cs-field-holder">
-                                    <div class="cs-checkbox">
-                                        <input type="checkbox" id="check1">
-                                        <label for="check1">Remember me</label>
-                                    </div>
-                                </div>
-                            </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-    
-                <!--Element Section End-->
+        <p class="login-box-msg">Sign in to start your session
+        </p>
+        <form action="<?php echo site_url('Login/index') ?>" method="post" id="defaultForm">
+            <div class="form-group has-feedback">
+                <input type="email" name="email" class="form-control" placeholder="Email">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
-        </div>
-    </div>
-
-    </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Forgot password</h4>
-        </div>
-        <div class="modal-body">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <form action="<?php echo site_url('Welcome/sendPasswordLink') ?>" method="POST">
-                <div class="cs-field-holder">
-                 <p>Enter the email you used to register. An email will be sent to you.</p>
-                    <input name="email" type="email" placeholder="email address *">
-                </div>
+            <div class="form-group has-feedback">
+                <input type="password" name="password" class="form-control" placeholder="Password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
+            <div class="row">
 
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-default" >Reset</button>
-        </div>
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                </div><!-- /.col -->
+            </div>
         </form>
-      </div>
-      
-    </div>
-  </div>    
+
+    </div><!-- /.login-box-body -->
+</div><!-- /.login-box -->
+
+
+
+<!-- Bootstrap 3.3.5 -->
+<script src="<?php echo base_url(); ?>includes/bootstrap/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="<?php echo base_url(); ?>includes/plugins/iCheck/icheck.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>includes/plugins/formValidation/js/formValidation.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>includes/plugins/formValidation/js/framework/bootstrap.js"></script>
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $('#defaultForm').formValidation({
+            message: 'This value is not valid',
+            icon: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                email: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The email address is required'
+                        },
+                        emailAddress: {
+                            message: 'The input is not a valid email address'
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The password is required'
+                        }
+                    }
+                }
+            }
+        });
+
+    });
+
+</script>
+
+
+</body>
+</html>

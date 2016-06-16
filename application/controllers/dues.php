@@ -8,17 +8,14 @@ class Dues extends CI_Controller
     {
         parent::__construct();
         $id = $this->session->userdata('id');
-        $this->load->model('RentModel');
-        $this->load->model('UserModel');
-        $this->load->model('AccountModel');
-        $this->load->model('DuesModel');
-        $this->load->model('PaymentModel');
-        
-        if ($this->session->userdata('id') > -1) {
+        if( $id != NULL  ) {
             $this->load->model('RentModel');
-            
-        } else if ($this->session->userdata('id') == -1) {
-            
+            $this->load->model('UserModel');
+            $this->load->model('AccountModel');
+            $this->load->model('ReportModel');
+
+        } else {
+
             redirect('Login/');
         }
     }

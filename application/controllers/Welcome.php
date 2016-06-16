@@ -7,77 +7,22 @@ class Welcome extends CI_Controller {
     public function __construct(){
         parent::__construct();
         $id = $this->session->userdata('id');
-        $this->load->model('UserModel');
-        $this->load->model('PaymentModel');
-
-        if( $this->session->userdata('id') > -1  ) {
+        if( $id != NULL  ) {
             $this->load->model('UserModel');
             $this->load->model('PaymentModel');
 
-        } else if ($this->session->userdata('id') == -1  ) {
+        } else {
 
-           redirect('Login/');
-
+            redirect('Login/');
         }
                
       }
 
     public function index()
     {
-  
-    }
-    public function login()
-    {
-        $this->load->view('common/header');
-        $this->load->view('website/login');
-        $this->load->view('common/footer');
+        redirect('Welcome/goods');
     }
 
-
-        //when admin login button is click
-    public function user_login_check() {
-        $email = $this->input->post('email', true);
-        $password = md5($this->input->post('password', true));
-
-        $result = $this->UserModel->user_login_check_info($email, $password);
-
-        //if query found any result i.e userfound
-        if($result) {
-
-            $data['id'] = $result->id;
-            //$data['message'] = 'Your are successfully Login && your session has been start';
-            $data['email'] = $result->email;
-            $data['password'] = $result->password;
-            $data['fullname'] = $result->fullname;
-            $this->session->set_userdata($data);
-            redirect('Welcome/goods');
-
-        }else{
-            $data['message'] = ' Your Email ID or Password is invalid  !!!!! ';
-            $this->session->set_userdata($data);
-            redirect('Welcome/login');
-        }
-
-    }
-
-    public function verify(){
-
-         if( $this->input->get() ) {
-
-            $token = $this->input->get('token', TRUE);
-
-
-            $data = array (
-                "verified" => 'true',
-                "status" => 'true'
-            );
-
-            $this->UserModel->update( 'user', 'token', $token, $data );
-           
-            redirect('Welcome/login');
-
-        }
-    } 
 
     public function editGoods(){
 
@@ -232,8 +177,8 @@ class Welcome extends CI_Controller {
                     );
 
                 
-                $data['result'] = $this->UserModel->insert( 'goods', $data );
-
+                $this->UserModel->insert( 'goods', $data );
+                $data['result'] = $this->UserModel->getGoods();
                 $this->load->view('common/header');
                 $this->load->view('website/goods', array('data' => $data));
                 $this->load->view('common/footer');
@@ -315,9 +260,10 @@ class Welcome extends CI_Controller {
 
             $data['result'] = $this->UserModel->insert( 'customers', $data );
 
-            $this->load->view('common/header');
-            $this->load->view('website/addCustomer', array('data' => $data));
-            $this->load->view('common/footer');
+            // $this->load->view('common/header');
+            // $this->load->view('website/addCustomer', array('data' => $data));
+            // $this->load->view('common/footer');
+            redirect('Welcome/customers');            
 
         } else {
             
@@ -329,43 +275,6 @@ class Welcome extends CI_Controller {
 
     }        
     
-
-
-
-
-    public function sendPasswordLink () {
-        if($this->input->post()){
-             $email = $this->input->post('email', true); 
-             $result = $this->UserModel->getUserByEmail($email);
-             if( $result ){
-                $message = "Please click on the url to reset your password \n" . base_url() . "index.php/Welcome/resetPassword?token=".$result->token;
-                mail($result->email, "Reset your password", $message);
-                redirect('Welcome/login');
-             } else {
-                redirect('Welcome/login');
-
-             }
-        }
-    } 
-
-    public function resetPassword () {
-        if($this->input->post()){
-            $token = $this->input->post('token', true);  
-            $password = $this->input->post('newPassword', true); 
-
-            $data = array (
-                "password" => md5($password)
-            );
-            $this->UserModel->updatePassword( $token, $data);
-           
-            redirect('Welcome/login');
-
-        } else {
-            $this->loadView("website/resetPassword", null);
-        }
-
-    }
-
 
     public function accounts(){
         
