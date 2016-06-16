@@ -39,12 +39,13 @@ class RentModel extends CI_Model
 
     function getRentDetailById($id) {
         $query = $this->db->query(
-            'SELECT account.account_number, customers.fname, customers.lname, goods.manufacturer, renting.payment_times, renting.start_date, renting.time_interval, renting.amount, renting.id
-                FROM account, customers, goods, renting
-                WHERE renting.account_id = account.account_id 
-                AND renting.customer_id = customers.id
-                AND renting.good_id = goods.id
-                AND renting.id = ' . $id );
+            'SELECT account.account_number, customers.fname, customers.lname, goods.manufacturer, account.payment_times, account.start_date, account.time_interval, account.amount, account.account_id
+                FROM account, customers, goods, account_customers, account_goods
+                WHERE account.account_id = account_customers.account_id
+                AND account_customers.customer_id = customers.id
+                AND account.account_id = account_goods.account_id
+                AND account_goods.good_id = goods.id
+                AND account.account_id = ' . $id );
 
         $query->result();
 
