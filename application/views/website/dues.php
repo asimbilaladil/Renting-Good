@@ -37,9 +37,9 @@
         <div class="cs-signup-form">
           <div class="cs-field-holder  col-sm-4">
             <h2>List of Dues</h2>
-            <input name="name" type="text" placeholder="Search *" id="filterTable-input" data-type="search"   >
+            <input name="name" type="text" id="searchTerm" placeholder="Search *" onkeyup="doSearch()" >
           </div>
-          <table data-role="table" class=" table"  data-filter="true" data-input="#filterTable-input">
+          <table class="table" id="dataTable" >
             <thead>
               <tr>
                 <th>Account No#</th>

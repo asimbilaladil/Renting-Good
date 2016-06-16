@@ -125,9 +125,9 @@
           <div class="cs-signup-form">
             <div class="cs-field-holder  col-sm-4">
               <h2>List Of Goods</h2>
-              <input name="name" type="text" id="search" placeholder="Search *" >
+              <input name="name" type="text" id="searchTerm" placeholder="Search *" onkeyup="doSearch()" >
             </div>
-            <table class="table" id="table" >
+            <table class="table" id="dataTable" >
               <thead>
                 <tr>
                   <th>Account Number</th>
@@ -159,3 +159,10 @@
     </div>
   </div>
 </div>
+
+
+<script >
+
+
+
+</script>
