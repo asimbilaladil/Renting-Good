@@ -88,9 +88,9 @@
           <div class="cs-signup-form">
             <div class="cs-field-holder  col-sm-4">
               <h2>List Of Goods</h2>
-              <input name="name" type="text" placeholder="Search *" id="filterTable-input" data-type="search"   >
+              <input name="name" type="text" placeholder="Search *" id="searchTerm" onkeyup="doSearch()">
             </div>
-            <table data-role="table" class=" table"  data-filter="true" data-input="#filterTable-input">
+            <table id="dataTable">
               <thead>
                 <tr>
                   <th>Manufacturer</th>
@@ -127,3 +127,8 @@
     </div>
   </div>
 </div>
+
+<script >
+  
+
+</script>

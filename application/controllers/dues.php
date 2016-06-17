@@ -13,6 +13,7 @@ class Dues extends CI_Controller
             $this->load->model('UserModel');
             $this->load->model('AccountModel');
             $this->load->model('ReportModel');
+            $this->load->model('DuesModel');
 
         } else {
 
