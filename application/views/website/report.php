@@ -33,6 +33,72 @@
 
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="cs-signup-form">
+
+         
+<div class="col-sm-3">
+</div>
+    <h2 class="col-sm-6 ">Rent  & Own Australia Pty Ltd</h2>
+    
+  </div>  
+  <div class="col-sm-3">
+</div>      
+  <h6 class="col-sm-8 ">ABN : 30  608 347 182 - ACL : 481594</h6>
+</br>
+</br>
+</br>
+        <div class="form-group">
+
+    <label class="col-sm-4 control-label">Consumer Lease Statement - Account</label>
+    <div class="col-sm-4">
+     <label class="col-sm-6 control-label"><?php  echo  $data['rentDetail']->account_number;?></label>
+    </div>
+  </div>
+
+
+<div class="form-group">
+
+    <label class="col-sm-4 control-label">Date</label>
+    <div class="col-sm-4">
+     <label class="col-sm-6 control-label"><?php echo date("d-m-y");    ?></label>
+    </div>
+  </div>
+<div class="form-group">
+
+    <label class="col-sm-4 control-label"><?php echo $data['rentDetail']->payment_times;    ?>  Payments </label>
+    <br>
+    <label class="col-sm-4 control-label"> of  $<?php echo $data['rentDetail']->amount;    ?> </label>
+
+  </div>
+  
+  <?php  foreach ($data['customers'] as $customer) {
+
+  ?>
+<div class="form-group">
+    <label class="col-sm-4 control-label"><?php echo $customer->fname. " " .$customer->lname;?></label>
+
+
+<br>
+
+    <label class="col-sm-4 control-label"><?php echo $customer->address1; ?></label>
+<br>
+    <label class="col-sm-4 control-label"><?php echo $customer->postcode; ?></label>
+
+  </div> 
+  <?php } ?> 
+
+<div class="form-group">
+<h4 class="col-sm-4 "> List of Goods:</h4>
+<br>
+
+  <?php  foreach ($data['goods'] as $good) {
+
+  ?>
+    <label class="col-sm-4 control-label"><?php echo $good->manufacturer;?></label>
+<br>
+
+  <?php } ?>  
+  </div> 
+          
           <table data-role="table" class=" table"  data-filter="true" data-input="#filterTable-input">
             <thead>
               <tr>
@@ -44,8 +110,11 @@
             </thead>
             <tbody>
             <?php
-
+            $totalPaid = 0;
+             $totalDue = 0;
               foreach ($data['report'] as $item) {
+                $totalPaid =  $totalPaid + $item->paid;
+                $totalDue = $totalDue + $item->due;
                 $formatDate = new DateTime($item->date);
                 echo '<tr>
                 <td> ' . $formatDate->format('d-m-Y') . ' </td>
@@ -60,6 +129,17 @@
             ?>
             </tbody>
           </table>
+<div class="form-group">
+
+    <label class="col-sm-4 control-label">Total of  Rental  Payments  Made <?php echo "$".$totalPaid;  ?> </label>
+
+  </div>          
+<div class="form-group">
+
+    <label class="col-sm-4 control-label">Balance of  Account at  <?php echo date("d-m-y") . " $".($totalDue-$totalPaid); ?>  </label>
+
+  </div>  
+        
         </div>
       </div>
     </div>

@@ -28,7 +28,9 @@ class Report extends CI_Controller
 
         $data['report'] = $this->ReportModel->reporting($id);
 
-        $data['rendDetail'] = $this->RentModel->getRentDetailById($id);
+        $data['rentDetail'] = $this->RentModel->getRentDetailById($id);
+        $data['goods'] = $this->RentModel->getGoodsById($id);
+        $data['customers'] = $this->RentModel->getCustomersById($id);
 
         $this->loadView('website/report', $data);
     }

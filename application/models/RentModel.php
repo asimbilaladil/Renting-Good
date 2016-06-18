@@ -66,4 +66,21 @@ class RentModel extends CI_Model
         return $query->result();        
     }
 
+    function getCustomersById( $id ) {
+
+        $query = $this->db->query( 'SELECT fname,lname,address1 , postcode from customers where id in (select customer_id from  account_customers where account_id = ' . $id .')' );
+        $query->result();
+
+        return $query->result();  
+    }
+
+    function getGoodsById( $id ) {
+
+        $query = $this->db->query( 'SELECT manufacturer from goods where id in (select good_id from  account_goods where account_id = ' . $id .')' );
+        $query->result();
+
+        return $query->result();  
+    }
+    
+
 }
