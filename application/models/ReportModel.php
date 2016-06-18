@@ -70,11 +70,12 @@ class ReportModel extends CI_Model
             if( $amountDue > $totalAmountToPaid) {
                 $amountDue = $totalAmountToPaid;
             }
-
-            $object->date = $date;
+            
+            $object->date =  $date;
             $object->paid = '';
             $object->due = '';
             $object->arrears = 'N';
+
             if( count($paymentItem) > 0 ){
                 $object->paid = $paymentItem->paid;
                 $amountPaid = $amountPaid + $paymentItem->paid;

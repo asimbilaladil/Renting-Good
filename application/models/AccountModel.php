@@ -57,4 +57,19 @@ class AccountModel extends CI_Model
         return $query->result();
     }
 
+    function getGoodsByAccountId($id) {
+        $query = $this->db->query(
+            'SELECT goods.id 
+            FROM goods, account, account_goods
+            WHERE account.account_id = account_goods.account_id
+            AND account_goods.good_id = goods.id
+            AND account.account_id=' . $id);
+
+        $query->result();
+
+        return $query->result();
+    }
+
 }
+
+

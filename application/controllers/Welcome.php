@@ -8,6 +8,7 @@ class Welcome extends CI_Controller {
         parent::__construct();
         $id = $this->session->userdata('id');
         if( $id != NULL  ) {
+            $this->load->model('AccountModel');
             $this->load->model('UserModel');
             $this->load->model('PaymentModel');
 
@@ -358,7 +359,7 @@ class Welcome extends CI_Controller {
             $selectedCustomerIds = $this->UserModel->getSelectedCustomers( $id );
             $goodsCount = $customerCount = 0;
 
-           
+            
             //iterate every good in post request
             foreach($selectedgoods as $good) {
 
@@ -385,13 +386,18 @@ class Welcome extends CI_Controller {
             }                        
             if ( ( $goodsCount == count($selectedgoods) ) &&   ( $goodsCount == count($selectedgoods) ) ){
                
+
+                $goods = $this->AccountModel->getGoodsByAccountId($id);
+
+                foreach ($goods as $good) {
+                    $this->UserModel->update('goods', 'id', $good->id, array( 'assigned' => '0'));
+                }
+
                 $data['result'] = $this->UserModel->delete('account_id',$id,'account');
 
                 redirect('welcome/accounts');
 
             }
-
-
 
         }    
 

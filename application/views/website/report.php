@@ -46,8 +46,9 @@
             <?php
 
               foreach ($data['report'] as $item) {
+                $formatDate = new DateTime($item->date);
                 echo '<tr>
-                <td> ' . $item->date . ' </td>
+                <td> ' . $formatDate->format('d-m-Y') . ' </td>
                 <td> ' . $item->due . ' </td>
                 <td> ' . $item->paid . ' </td>
                 <td> ' . $item->arrears . ' </td>
