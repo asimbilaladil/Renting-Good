@@ -7,7 +7,7 @@ class Renting extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        error_reporting(0);
+        //error_reporting(0);
         $id = $this->session->userdata('id');
         if( $id != NULL  ) {
             $this->load->model('RentModel');

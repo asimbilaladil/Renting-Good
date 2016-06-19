@@ -53,9 +53,11 @@
             <tbody>
             <?php
               foreach ($data['details'] as $due) {
+                $formatDate = new DateTime($due->start_date);
+
                 echo '<tr>
                   <td> '. $due->account_number .' </td>
-                  <td> '. $due->start_date .' </td>
+                  <td> '. $formatDate->format('d-m-Y') .' </td>
                   <td> '. $due->time_interval .' </td>
                   <td> '. $due->payment_times .' </td>
                   <td> '. $due->amount .' </td>
