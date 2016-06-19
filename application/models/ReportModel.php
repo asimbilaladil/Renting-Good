@@ -66,9 +66,7 @@ class ReportModel extends CI_Model
         foreach ($datesList as $date) {
             $object = new stdClass();
             $paymentItem = $this->getPaymentByIdAndDate('account_id', $id, 'date', $date);
-
             
-
             if( $amountDue > $totalAmountToPaid) {
                 $amountDue = $totalAmountToPaid;
             }

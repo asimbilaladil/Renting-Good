@@ -90,7 +90,7 @@
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div class="cs-field-holder">
-                    <select name="paymentTimes" id="paymentTimes" required>
+                    <select name="timeInterval" id="paymentTimes" required>
                       <option value="7"> 7 days </option>
                       <option value="14"> 14 days </option>
                     </select>
@@ -100,7 +100,7 @@
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div class="cs-field-holder">
-                    <input name="timeInterval" placeholder="Payment Times" type="number" required>
+                    <input name="paymentTimes" placeholder="Payment Times" type="number" required>
                   </div>
                     <br>
                 </div>
