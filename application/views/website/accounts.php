@@ -123,11 +123,22 @@
         <!--Element Section Start-->
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="cs-signup-form">
-            <div class="cs-field-holder  col-sm-4">
               <h2>List Of Accounts</h2>
-              <input type="radio" name="filterby" value="accountNumber" onchange="searching()" > Search by Account Number </input>
-              <input type="radio" name="filterby" value="customerName" onchange="searching()" > Search by Customer Name </input>
-              <input name="name" type="text" id="searchTerm" placeholder="Search *" onKeyUp="searching()" >
+
+  <div class="form-group">
+             
+    <div class="col-sm-12"> 
+      <div class="col-sm-4"> 
+ <input  name="name" type="text" id="searchTerm" placeholder="Search *" onKeyUp="searching()" >
+ </div>
+  <div class="col-sm-3"> 
+  <label class="radio-inline"> <input type="radio" checked="checked" name="filterby" value="accountNumber" onchange="searching()" > Search by Account Number </input> </label>
+             </div>
+              <div class="col-sm-3"> 
+             <label class="radio-inline"> <input type="radio"  name="filterby" value="customerName" onchange="searching()" > Search by Customer Name </input> </label>
+  </div>
+    </div>              
+           
             </div>
             <table class="table" id="dataTable" >
               <thead>
@@ -142,7 +153,7 @@
                       echo 
                           '<tr>
                               <td  class="col-lg-8 col-md-8 col-sm-8 col-xs-8" > '. $item->account_number .'</td>
-                              <td  class="col-lg-1 col-md-1 col-sm-1 col-xs-1"><a href="'. site_url('welcome/editAccount?id=' . $item->account_id ) .' "><span class="icon-pencil"></span> </a> 
+                              <td  class="col-lg-1 col-md-1 col-sm-1 col-xs-1"> 
                                        <span>&nbsp;&nbsp;</span>
                                   <a href="'. site_url('welcome/deleteAccount?id=' . $item->account_id ) .' "><span class="icon-trash"></span> </a> 
                                 <span>&nbsp;&nbsp;</span>
