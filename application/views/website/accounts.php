@@ -124,8 +124,10 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="cs-signup-form">
             <div class="cs-field-holder  col-sm-4">
-              <h2>List Of Goods</h2>
-              <input name="name" type="text" id="searchTerm" placeholder="Search *" onkeyup="doSearch()" >
+              <h2>List Of Accounts</h2>
+              <input type="radio" name="filterby" value="accountNumber" onchange="searching()" > Search by Account Number </input>
+              <input type="radio" name="filterby" value="customerName" onchange="searching()" > Search by Customer Name </input>
+              <input name="name" type="text" id="searchTerm" placeholder="Search *" onKeyUp="searching()" >
             </div>
             <table class="table" id="dataTable" >
               <thead>
@@ -134,7 +136,7 @@
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="customeSearch">
                 <?php
                   foreach($data['accounts'] as $item) {
                       echo 
@@ -152,6 +154,7 @@
                   ?>                  
               </tbody>
             </table>
+
           </div>
         </div>
         <!--Element Section End-->
@@ -163,6 +166,31 @@
 
 <script >
 
+function searching() {
 
+  var filterby = document.querySelector('input[name = "filterby"]:checked').value;
+
+  if(filterby === 'accountNumber') {
+
+    doSearch();
+
+  } else if ( filterby === 'customerName' ) {
+
+    var state=$('#searchTerm').val();
+
+    $.get('<?php echo site_url('Welcome/accountSearch') ?>', {
+        state:state
+    }, function(data) {
+
+        $('#customeSearch').show().html(data);
+
+    });     
+
+  }
+  
+
+  
+
+}
 
 </script>

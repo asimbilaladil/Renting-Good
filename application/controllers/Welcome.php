@@ -347,6 +347,40 @@ class Welcome extends CI_Controller {
             
     }
 
+    public function accountSearch() {
+        
+        $query = $this->input->get('state', TRUE);
+
+        $html = '';    
+                
+        if( isset( $query ) && strlen($query) > 0 ) {
+
+            $searchResult = $this->AccountModel->searchAccountByCustomerName( $query );
+            
+        } else {
+
+            $searchResult = $this->AccountModel->selectAll();
+
+        }
+
+        foreach ($searchResult as $item) {
+        
+            echo $html . $html . '
+                    <tr>
+                        <td  class="col-lg-8 col-md-8 col-sm-8 col-xs-8" > '. $item->account_number .'</td>
+                        <td  class="col-lg-1 col-md-1 col-sm-1 col-xs-1"><a href="'. site_url('welcome/editAccount?id=' . $item->account_id ) .' "><span class="icon-pencil"></span> </a> 
+                        <span>&nbsp;&nbsp;</span>
+                        <a href="'. site_url('welcome/deleteAccount?id=' . $item->account_id ) .' "><span class="icon-trash"></span> </a> 
+                        <span>&nbsp;&nbsp;</span>
+                        <a href="'. site_url('report?id=' . $item->account_id ) .' "><span class="icon-desktop"></span> </a> 
+                        </td>
+                    </tr>';
+        }
+
+
+        echo $html;  
+
+    }
 
     public function deleteAccount(){
     

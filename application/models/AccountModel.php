@@ -70,6 +70,21 @@ class AccountModel extends CI_Model
         return $query->result();
     }
 
+    function searchAccountByCustomerName($query) {
+
+        $query = $this->db->query(
+            "SELECT account.account_number, account.account_id
+            FROM account, account_customers, customers
+            WHERE account.account_id = account_customers.account_id
+            AND account_customers.customer_id = customers.id
+            AND customers.fname LIKE '%". $query . "%'" );
+
+        $query->result();
+
+        return $query->result();
+
+    }
+
 }
 
 
